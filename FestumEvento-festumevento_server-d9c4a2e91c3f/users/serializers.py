@@ -25,7 +25,6 @@ class UserSerializer(serializers.ModelSerializer):
         allow_blank=False, write_only=True)
 
     def create(self, validated_data):
-        print('validated_data',validated_data['confirm_password'],)
         user = models.User.objects.create_user(
             validated_data['name'],
             validated_data['email'],

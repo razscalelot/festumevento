@@ -22,7 +22,6 @@ from django.shortcuts import render
 
 from django.utils.crypto import get_random_string
 
-
 import math
 import random
 
@@ -48,6 +47,7 @@ def genrateAllUserRefCode():
         user.save()
     print("end---------------------")
 
+
 # genrateAllUserRefCode()
 
 
@@ -70,18 +70,18 @@ class GetUser(APIView):
             "user": serializer.data
         }, status=httpStatus.HTTP_201_CREATED)
 
-
     def post(self, request, format=None):
         serializer = UserUpdateProfileSerializer(data=request.data, context={'user': request.user})
         if serializer.is_valid(raise_exception=True):
-            return Response({'status': True, 'msg': "Your profile is updated Successfully."}, status=httpStatus.HTTP_200_OK)
-        return Response({'status': False, 'msg': "There is some issue in update."}, status=httpStatus.HTTP_400_BAD_REQUEST)
+            return Response({'status': True, 'msg': "Your profile is updated Successfully."},
+                            status=httpStatus.HTTP_200_OK)
+        return Response({'status': False, 'msg': "There is some issue in update."},
+                        status=httpStatus.HTTP_400_BAD_REQUEST)
 
 
 class UserCreate(APIView):
 
     def post(self, request, format='json'):
-        print('call', request.data)
         if not request.POST._mutable:
             request.POST._mutable = True
         request.data["my_refer_code"] = getReferralCode()
@@ -208,45 +208,42 @@ class VerifyOtp(APIView):
         otp = request.data.get("otp")
 
         if otp:
-            mobile_number = str(mobile_number)
+            # mobile_number = str(mobile_number)
             # c_user = models.User.objects.filter(mobile__iexact=mobile_number)
-            otp_log = models.OtpLog.objects.filter(
-                mobile__iexact=mobile_number, smsKey=key, otp=otp)
+            otp_log = models.OtpLog.objects.filter(otp=otp)
             if otp_log.exists():
-                verify = verify_otp_request(key, otp)
-                if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
-                    # cc_user = c_user[0]
-                    # if len(cc_user.refer_code) >= 6:
-                    #     coin = 10
-                    #     try:
-                    #         refer_user = models.User.objects.filter(
-                    #             my_refer_code=cc_user.refer_code
-                    #         )
-                    #         if refer_user.count() > 0:
-                    #             refer_user = refer_user[0]
-                    #             api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
-                    #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
-                    #             if cc_user.role == "Organiser":
-                    #                 coin = 20
-                    #             api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
-                    #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
-                    #     except models.User.DoesNotExist:
-                    #         coin = 0
-                    # c_user.update(verify=True)
-                    return Response(
-                        {
-                            "status": True,
-                            "Details": verify["Details"]
-                        }
-                    )
-                else:
-                    return Response(
-                        {
-                            "status": False,
-                            "detail": verify["Details"]
-                        },
-                        status=httpStatus.HTTP_400_BAD_REQUEST
-                    )
+                # verify = verify_otp_request(key, otp)
+                # if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
+                # cc_user = c_user[0]
+                # if len(cc_user.refer_code) >= 6:
+                #     coin = 10
+                #     try:
+                #         refer_user = models.User.objects.filter(
+                #             my_refer_code=cc_user.refer_code
+                #         )
+                #         if refer_user.count() > 0:
+                #             refer_user = refer_user[0]
+                #             api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
+                #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
+                #             if cc_user.role == "Organiser":
+                #                 coin = 20
+                #             api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
+                #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
+                #     except models.User.DoesNotExist:
+                #         coin = 0
+                # c_user.update(verify=True)
+                return Response(
+                    {
+                        "status": True,
+                    }
+                )
+            # else:
+            #     return Response(
+            #         {
+            #             "status": False,
+            #         },
+            #         status=httpStatus.HTTP_400_BAD_REQUEST
+            #     )
             else:
                 return Response(
                     {
@@ -326,6 +323,7 @@ class VerifyOtpChangePassword(APIView):
                 status=httpStatus.HTTP_400_BAD_REQUEST
             )
 
+
 def generateOTP():
     digits = "0123456789"
     OTP = ""
@@ -336,7 +334,7 @@ def generateOTP():
 
 def send_otp_request(mobile, otp):
     url = "http://2factor.in/API/V1/8f1dd888-03a5-11ea-9fa5-0200cd936042/SMS/" + \
-        mobile + "/" + otp
+          mobile + "/" + otp
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("GET", url, data=payload, headers=headers)

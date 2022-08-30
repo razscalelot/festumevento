@@ -6,13 +6,6 @@ from django.core.validators import validate_email
 # Create your models here
 class UserManager(BaseUserManager):
     def create_user(self, name, email, mobile, country_code, role, password=None, confirm_password=None, refer_code=None, my_refer_code=None, fcm_token=None, about=None):
-        print('password', password)
-        print('confirmPassword', confirm_password)
-        print('name', name)
-        print('email', email)
-        print('mobile', mobile)
-        print('role', role)
-        print('refer_code', refer_code)
         if not email:
             return ValueError("We need your email address")
         try:
