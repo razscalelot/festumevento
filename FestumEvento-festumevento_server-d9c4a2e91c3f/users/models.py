@@ -5,35 +5,40 @@ from django.core.validators import validate_email
 
 # Create your models here
 class UserManager(BaseUserManager):
-    def create_user(self, name, email, mobile, about, country_code, role, password=None, confirm_password=None, refer_code=None, my_refer_code=None,fcm_token=None):
+    def create_user(self, name, email, mobile, country_code, role, password=None, confirm_password=None, refer_code=None, my_refer_code=None, fcm_token=None, about=None):
         print('password', password)
         print('confirmPassword', confirm_password)
+        print('name', name)
+        print('email', email)
+        print('mobile', mobile)
+        print('role', role)
+        print('refer_code', refer_code)
         if not email:
             return ValueError("We need your email address")
         try:
             validate_email(email)
         except:
-            return ValueError("Invalid Email address");
+            return ValueError("Invalid Email address")
 
         if not password:
-            return ValueError("You must have strong password");
+            return ValueError("You must have strong password")
         
         if len(password) < 8:
-            return ValueError("You must have strong password");
+            return ValueError("You must have strong password")
         else:
             if password != confirm_password:
-                return ValueError("Confirm passwords do not match.");
+                return ValueError("Confirm passwords do not match.")
 
         if not name:
-            return ValueError("Please let me know your name");
+            return ValueError("Please let me know your name")
 
         if not mobile:
-            return ValueError("We need your mobile number");
+            return ValueError("We need your mobile number")
 
         if not country_code:
-            return ValueError("*country code");
+            return ValueError("*country code")
         if not role:
-            return ValueError("*Role");
+            return ValueError("*Role")
 
         userObj = self.model(
             email=self.normalize_email(email),
