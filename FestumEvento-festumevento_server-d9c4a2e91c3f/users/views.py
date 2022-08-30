@@ -100,18 +100,34 @@ class UserCreate(APIView):
 
         if status:
             user = serializer.save()
-            print('user.mobile', user)
+            print('user', user.id)
+            c_user = models.User.objects.filter(id=user.id)
             api.views.set_Free_Subscription(user)
             if user:
+                cc_user = c_user[0]
+                if len(cc_user.refer_code) >= 6:
+                    coin = 10
+                    try:
+                        refer_user = models.User.objects.filter(
+                            my_refer_code=cc_user.refer_code
+                        )
+                        if refer_user.count() > 0:
+                            refer_user = refer_user[0]
+                            api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
+                                               "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
+                                               "", "")
+                            if cc_user.role == "Organiser":
+                                coin = 20
+                            api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
+                                               "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
+                                               "", "")
+                    except models.User.DoesNotExist:
+                        coin = 0
+                c_user.update(verify=True)
                 return Response({
                     "status": status,
                     "data": serializer.data
                 }, status=httpStatus.HTTP_201_CREATED)
-            else:
-                return Response({
-                    "status": status,
-                    "data": serializer.data
-                }, status=httpStatus.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response(
                 {"status": status,
