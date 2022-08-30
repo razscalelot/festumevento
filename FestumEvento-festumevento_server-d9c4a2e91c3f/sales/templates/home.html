@@ -1,0 +1,122 @@
+{% extends "base_content.html" %}
+
+{% block content %}
+{% load crispy_forms_tags  %}
+<div class="container-fluid">
+    {% if user.is_authenticated %}
+
+    <div class="row">
+        {% if user.is_admin %}
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Sales</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Total paid</th>
+                                <th scope="col">Total Not paid</th>
+                            </tr>
+                            {% for item in userData %}
+                            <tr>
+                                <td><a href="/salespanel/home?mobile={{item.mobile}}">{{ item.name }}</a></td>
+                                <td>{{ item.mobile }}</td>
+                                <td><span style="color: green;font-weight: bold;">{{item.totalAmountPaid}}</span>
+                                </td>
+                                <td><span style="color: red;font-weight: bold;">{{item.totalAmountNotPaid}}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" class=" form-group">
+                        {% csrf_token %}
+                        {{ leadform | crispy }}
+                        <button type="submit" class="btn btn-success">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            Total Paid: <span style="color: green;font-weight: bold;">{{totalAmountpaid}}</span>
+                        </div>
+                        <div class="col">
+                            Total Not Paid: <span style="color: red;font-weight: bold;">{{totalAmountNotPaid}}</span>
+                        </div>
+                    </div>
+                    <form method="POST" action="paid" class=" form-group">
+                        {% csrf_token %}
+                        {% if user.is_admin %}
+                        <div class="row">
+                            <div class="col-sm-2 py-1 offset-sm-10">
+                                <button class="btn btn-warning" type="submit">Save</button>
+                                <input type="hidden" value="{{selectedUser}}" name="selectedUser" >
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col">                               
+                                <table class="table">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Organiser/Shop</th>
+                                            <th scope="col">Mobile</th>
+                                            <th scope="col">date</th>
+                                            <th scope="col">Amount</th>
+                                            <th scope="col">Is paid</th>
+                                            {% if user.is_admin %}
+                                            <th scope="col">Action</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    {% for item in lead %}
+                                    <tr>
+                                        <td>{{ item.orgUser.name }}</td>
+                                        <td>{{ item.orgUser.mobile }}</td>
+                                        <td>{{ item.createdon }}</td>
+                                        <td>{{ item.amount }}</td>
+                                        {% if item.isPayed %}
+                                        <td><span style="color: green;">Yes</span></td>
+                                        {% else %}
+                                        <td><span style="color: red;">No</span></td>
+                                        {% endif %}
+                                        {% if user.is_admin %}
+                                        {% if item.isPayed %}
+                                        <td><input type="checkbox" name="selected_options" value="{{ item.id}}" checked>
+                                        </td>
+                                        {% else %}
+                                        <td><input type="checkbox" name="selected_options" value="{{ item.id}}"></td>
+                                        {% endif %}
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <script LANGUAGE='JavaScript'>
+        window.location.href = '/salespanel/login/';
+    </script>
+    {% endif %}
+</div>
+
+{% endblock content %}

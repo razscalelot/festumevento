@@ -1,0 +1,26 @@
+{% extends "base_content.html" %}
+{% block content %}
+{% load crispy_forms_tags  %}
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" class="form-group">
+                        {% csrf_token %}
+                        {{ form | crispy}}
+                        <div class="row " >
+                            <div class="col-sm text-left">
+                                <a  class="btn btn-warning" href="/salespanel/register">Register</a>
+                            </div>
+                            <div class="col-sm text-right">
+                                <button type="submit" class="btn btn-success">Login</button>
+                            </div>                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
