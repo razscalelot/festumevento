@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=D:\FestumEvento\Festum Evento\FestumEvento-festumevento_server-d9c4a2e91c3f\FestumEvento-festumevento_server-d9c4a2e91c3f\env_festum
+set VIRTUAL_ENV=D:\Scalelot\Projects\festumevento\FestumEvento-festumevento_server-d9c4a2e91c3f\env_festum
 
 if not defined PROMPT set PROMPT=$P$G
 
