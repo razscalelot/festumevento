@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="D:\FestumEvento\Festum Evento\FestumEvento-festumevento_server-d9c4a2e91c3f\FestumEvento-festumevento_server-d9c4a2e91c3f\env_festum"
+VIRTUAL_ENV="D:\Scalelot\Projects\festumevento\FestumEvento-festumevento_server-d9c4a2e91c3f\env_festum"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
