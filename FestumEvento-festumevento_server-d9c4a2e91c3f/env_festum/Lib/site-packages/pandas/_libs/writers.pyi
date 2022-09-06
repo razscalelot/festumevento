@@ -1,11 +1,8 @@
-from __future__ import annotations
-
 import numpy as np
 
-from pandas._typing import ArrayLike
-
+# TODO: can make this more specific
 def write_csv_rows(
-    data: list[ArrayLike],
+    data: list,
     data_index: np.ndarray,
     nlevels: int,
     cols: np.ndarray,

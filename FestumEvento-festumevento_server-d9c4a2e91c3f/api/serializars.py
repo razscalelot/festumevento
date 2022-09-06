@@ -240,7 +240,6 @@ class OrgEventSerializer(serializers.ModelSerializer):
         event = OrgEventRegistrationSerializer(event_id, many=True)
         return event.data
 
-
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
@@ -363,7 +362,6 @@ class ConfigSerializer(serializers.ModelSerializer):
     class Meta:
         model = Config
         fields = "__all__"
-
 
 
 class LocalOfferBookingSerializer(serializers.ModelSerializer):
@@ -697,9 +695,9 @@ class ShopCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentsAndRatingSerializer(serializers.ModelSerializer):    
+class CommentsAndRatingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    
+
     class Meta:
         model = CommentsAndRating
         fields = "__all__"

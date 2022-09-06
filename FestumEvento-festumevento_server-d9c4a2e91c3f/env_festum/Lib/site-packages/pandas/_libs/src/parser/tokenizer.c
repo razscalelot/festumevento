@@ -25,8 +25,7 @@ GitHub. See Python Software Foundation License and BSD licenses for these.
 
 #include "../headers/portable.h"
 
-void coliter_setup(coliter_t *self, parser_t *parser, int64_t i,
-                   int64_t start) {
+void coliter_setup(coliter_t *self, parser_t *parser, int i, int start) {
     // column i, starting at 0
     self->words = parser->words;
     self->col = i;
@@ -412,7 +411,7 @@ static void append_warning(parser_t *self, const char *msg) {
 static int end_line(parser_t *self) {
     char *msg;
     int64_t fields;
-    int64_t ex_fields = self->expected_fields;
+    int ex_fields = self->expected_fields;
     int64_t bufsize = 100;  // for error or warning messages
 
     fields = self->line_fields[self->lines];
@@ -446,7 +445,7 @@ static int end_line(parser_t *self) {
     }
 
     if (!(self->lines <= self->header_end + 1) &&
-        (fields > ex_fields) && !(self->usecols)) {
+        (self->expected_fields < 0 && fields > ex_fields) && !(self->usecols)) {
         // increment file line count
         self->file_lines++;
 
@@ -460,8 +459,8 @@ static int end_line(parser_t *self) {
         if (self->on_bad_lines == ERROR) {
             self->error_msg = malloc(bufsize);
             snprintf(self->error_msg, bufsize,
-                    "Expected %" PRId64 " fields in line %" PRIu64 ", saw %"
-                    PRId64 "\n", ex_fields, self->file_lines, fields);
+                    "Expected %d fields in line %" PRIu64 ", saw %" PRId64 "\n",
+                    ex_fields, self->file_lines, fields);
 
             TRACE(("Error at line %d, %d fields\n", self->file_lines, fields));
 
@@ -472,9 +471,8 @@ static int end_line(parser_t *self) {
                 // pass up error message
                 msg = malloc(bufsize);
                 snprintf(msg, bufsize,
-                        "Skipping line %" PRIu64 ": expected %" PRId64
-                        " fields, saw %" PRId64 "\n",
-                        self->file_lines, ex_fields, fields);
+                        "Skipping line %" PRIu64 ": expected %d fields, saw %"
+                        PRId64 "\n", self->file_lines, ex_fields, fields);
                 append_warning(self, msg);
                 free(msg);
             }
@@ -1786,8 +1784,6 @@ char* _str_copy_decimal_str_c(const char *s, char **endpos, char decimal,
     size_t length = strlen(s);
     char *s_copy = malloc(length + 1);
     char *dst = s_copy;
-    // Skip leading whitespace.
-    while (isspace_ascii(*p)) p++;
     // Copy Leading sign
     if (*p == '+' || *p == '-') {
         *dst++ = *p++;
@@ -1802,25 +1798,10 @@ char* _str_copy_decimal_str_c(const char *s, char **endpos, char decimal,
        *dst++ = '.';
        p++;
     }
-    // Copy fractional part after decimal (if any)
-    while (isdigit_ascii(*p)) {
-       *dst++ = *p++;
-    }
-    // Copy exponent if any
-    if (toupper_ascii(*p) == toupper_ascii('E')) {
-       *dst++ = *p++;
-       // Copy leading exponent sign (if any)
-       if (*p == '+' || *p == '-') {
-           *dst++ = *p++;
-       }
-       // Copy exponent digits
-       while (isdigit_ascii(*p)) {
-           *dst++ = *p++;
-       }
-    }
-    *dst++ = '\0';  // terminate
+    // Copy the remainder of the string as is.
+    strncpy(dst, p, length + 1 - (p - s));
     if (endpos != NULL)
-        *endpos = (char *)p;
+        *endpos = (char *)(s + length);
     return s_copy;
 }
 
@@ -1858,11 +1839,6 @@ double round_trip(const char *p, char **q, char decimal, char sci, char tsep,
 
     PyGILState_Release(gstate);
     free(pc);
-    if (skip_trailing && q != NULL && *q != p) {
-        while (isspace_ascii(**q)) {
-            (*q)++;
-        }
-    }
     return r;
 }
 

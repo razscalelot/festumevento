@@ -1,0 +1,4111 @@
+{
+	"info": {
+		"_postman_id": "9a9f00a3-e832-46bb-92e9-4497ab594a13",
+		"name": "festumevento",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21125586"
+	},
+	"item": [
+		{
+			"name": "config",
+			"item": [
+				{
+					"name": "get state by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"state\" : \"test1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/state/edit/39",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"state",
+								"edit",
+								"39"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "confilg Listing",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/config",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "config Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\" : \"abc\",\r\n    \"value\" : \"test\",\r\n    \"subvalue\" : \"test\",\r\n    \"morevalue\" : \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/config/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"config",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "config delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/config/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"config",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store config",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjAxMjQsImV4cCI6MTYzMjY0NjUyNH0.8FnM2kI897R-QB2piY7JHMxbbn0_QE83kDFwgckUxTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"key\" : \"abc\",\r\n    \"value\" : \"test\",\r\n    \"subvalue\" : \"test\",\r\n    \"morevalue\" : \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/config",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"config"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shop category",
+			"item": [
+				{
+					"name": "Get shop category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category_name\": \"Cafe-New\",\r\n    \"is_active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/shop-category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shop-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shop category Update",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/shop-category/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shop-category",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shop category delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/shop-category/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shop-category",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "store shop category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjg4NDc1NjIsImV4cCI6MTYyODkzMzk2Mn0.NpeQjWGr7KqU0NOyk-juKRG2WiwCnK8qGdB81y-KJ7Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"category_name\" : \"abc\",\r\n    \"is_active\" : 1\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/shop-category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shop-category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Complain",
+			"item": [
+				{
+					"name": "getAllComplain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3MzE1MzksImV4cCI6MTYzMjgxNzkzOX0.HgyRWOnuu7QGQppRe3vwTXH5jY_bvIG5bjDkC4uOet8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/complain",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"complain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Complain By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI0ODM1MjgsImV4cCI6MTYzMjU2OTkyOH0.YT_Or3NXarx7WoZWh1GujdrkKJ7PQsGmvEglHe5xJHI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/complain/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"complain",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit complain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/complain/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"complain",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Complain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/complain/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"complain",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add complain",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3MzQzNjAsImV4cCI6MTYzMjgyMDc2MH0.YtfXTXM_kcV26JhGMx28klOpEdX0pF6wVnRu4QAGKNc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"mobile_number\" : 1234567890,\r\n  \"email\" : \"test@gmail.com\",\r\n  \"remark\" : \"1\",\r\n  \"complain_type\" : \"1\",\r\n  \"user_id\" : \"2\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/complain",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"complain"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "Get Subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/subscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\" : \"10\",\r\n    \"no_of_post\" : \"2\",\r\n    \"max_days\" : \"2\",\r\n    \"name\" : \"test\",\r\n    \"validity_days\" : \"2\",\r\n    \"is_active\" : 1\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/subscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":4\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/subscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"price\" : \"1231\",\r\n    \"no_of_post\" : \"5\",\r\n    \"max_days\" : \"2\",\r\n    \"name\" : \"test\",\r\n    \"validity_days\" : \"4\",\r\n    \"is_active\" : \"1\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/subscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\" : 6}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/subscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Subscription Transaction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/usersubscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"usersubscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get subscription Transaction  By Subscription Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":48\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/usersubscription/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"usersubscription",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change status of subscription",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjI2MTMsImV4cCI6MTYzMjY0OTAxM30.ecsuhQhrkCfAiJtWCvYDPlOq8IuyCLMw5-Z_C_j-E8c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/subscription/change-status/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"subscription",
+								"change-status",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Local Offer",
+			"item": [
+				{
+					"name": "Get offer by Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjg3NDUxNDd9.-uASNGx61pbyDlTHWmeBMZwC96LaE6nHW5VFN4BVXYg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/offers/32",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"offers",
+								"32"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Local offer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzNzc2MjksImV4cCI6MTYzMjQ2NDAyOX0.2pxO-0v-qoXtYf8Oe9rqcZBiWxPR0CRblm_9CmyTgow",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/offers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"offers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "org wise events",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "event_id",
+									"value": "54",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/event/new/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/event/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Seating Arrangement Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzOTI4OTEsImV4cCI6MTYzMjQ3OTI5MX0.6uguoSF_Bx_JguaSj54mqCOIoh2A_rYCrj88V2AwsRM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/seating-arrangement-booking/37",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"seating-arrangement-booking",
+								"37"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get event by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjg3NDUxNDd9.-uASNGx61pbyDlTHWmeBMZwC96LaE6nHW5VFN4BVXYg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/events/31",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"events",
+								"31"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Event Occasion",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzODc0NTUsImV4cCI6MTYzMjQ3Mzg1NX0.TNjZRgJa3gjnZPMspfZAx7q7vFslt1AxQhzlEmY8qCA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event-Registration?is_verify=1&location=Party Plot",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event-Registration"
+							],
+							"query": [
+								{
+									"key": "is_verify",
+									"value": "1"
+								},
+								{
+									"key": "location",
+									"value": "Party Plot"
+								},
+								{
+									"key": "toDayOccasion",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get ocaasion Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzOTQ1NTgsImV4cCI6MTYzMjQ4MDk1OH0.B6wfFJaIa2rc3ZNgfyj6PQ2mwiKXD6iSyCRSWQFgXgc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/occasion-image/29",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"occasion-image",
+								"29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "occasion Video",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzOTQ5NzYsImV4cCI6MTYzMjQ4MTM3Nn0.CvELZZ_Ob-G1JIJn4aASgJkntYgb5LkynIcC93KQsHY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/occasion-video/29",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"occasion-video",
+								"29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Occasion  By event",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzOTYwODksImV4cCI6MTYzMjQ4MjQ4OX0.4JLDYqatyB4B5UZuoaY9qTUyWnSLA6KiHiUbLZrMQg4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/event-Registration-byEvent/32",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"event-Registration-byEvent",
+								"32"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "occasion Attendee",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI0NzA5MzMsImV4cCI6MTYzMjU1NzMzM30.zOrZHB8LUqhvaSl7Y7HgHpyUPUK7ud9F2TpSmirfqok",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/occasion-attendee/29",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"occasion-attendee",
+								"29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment And Rating",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI0NzIwNjUsImV4cCI6MTYzMjU1ODQ2NX0.pWn7KUqeo9PAWy1Zz_6I9JXHfaz_17nslVQYAMlOmws",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/comment-ratting/29",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comment-ratting",
+								"29"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User upcoming Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/events/?upcoming=true",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"events",
+								""
+							],
+							"query": [
+								{
+									"key": "upcoming",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Search Events",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/events/?start=2021-09-23",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"events",
+								""
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2021-09-23"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poster",
+			"item": [
+				{
+					"name": "Get All Poster",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzMzNTEwMzEsImV4cCI6MTYzMzQzNzQzMX0.xIUyy92HEmsoEmJxwP36AiyJorwOWIz2oZo5c4afGg0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get poster By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzMzNTEwMzEsImV4cCI6MTYzMzQzNzQzMX0.xIUyy92HEmsoEmJxwP36AiyJorwOWIz2oZo5c4afGg0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Poster Category",
+			"item": [
+				{
+					"name": "Get All Poster Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NDY5NTAsImV4cCI6MTYzMjYzMzM1MH0.aCIcrjhb76dSvTRwrVepZQtT-sJGOEZL2BNMVV1JGDY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster",
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Poster Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"category_name\" : \"test\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/poster/categories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster",
+								"categories"
+							],
+							"query": [
+								{
+									"key": "category_name",
+									"value": "test",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Poster category By id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster/categoy/by?categor_id=1&days=2&start=0&count=50",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster",
+								"categoy",
+								"by"
+							],
+							"query": [
+								{
+									"key": "categor_id",
+									"value": "1"
+								},
+								{
+									"key": "days",
+									"value": "2"
+								},
+								{
+									"key": "start",
+									"value": "0"
+								},
+								{
+									"key": "count",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Poster Caegory",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NTY2MzYsImV4cCI6MTYzMjY0MzAzNn0.HLupBaIzDB3WxVE6ZtT69bz9jDroeZMXB9syiKtIcH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"category_name\" : \"Women's wear\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/poster-category/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-category",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Poster Category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NTY2MzYsImV4cCI6MTYzMjY0MzAzNn0.HLupBaIzDB3WxVE6ZtT69bz9jDroeZMXB9syiKtIcH0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster-category/8",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-category",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Poster Price Category",
+			"item": [
+				{
+					"name": "Get  All category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjAxMjQsImV4cCI6MTYzMjY0NjUyNH0.8FnM2kI897R-QB2piY7JHMxbbn0_QE83kDFwgckUxTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster-price-category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-price-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get poster price By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjAxMjQsImV4cCI6MTYzMjY0NjUyNH0.8FnM2kI897R-QB2piY7JHMxbbn0_QE83kDFwgckUxTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/poster-price-category/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-price-category",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Poster Price  category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjI2MTMsImV4cCI6MTYzMjY0OTAxM30.ecsuhQhrkCfAiJtWCvYDPlOq8IuyCLMw5-Z_C_j-E8c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"test\",\r\n    \"price\" : \"7.2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/poster-price-category",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-price-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Poster Price category status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NjI2MTMsImV4cCI6MTYzMjY0OTAxM30.ecsuhQhrkCfAiJtWCvYDPlOq8IuyCLMw5-Z_C_j-E8c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"is_active\" : 1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/change-poster-price-category-status/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"change-poster-price-category-status",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit poster price category",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI1NzI5NzgsImV4cCI6MTYzMjY1OTM3OH0.W7h-axcUhPMnZ1_GEhAOkPq0BviY6kAHOg_mcnP_v14",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\" : \"test\",\r\n\"is_active\" : 1,\r\n\"price\" : 50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/poster-price-category/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"poster-price-category",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Advertisement",
+			"item": [
+				{
+					"name": "get All  Advertisement",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/advertisement",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"advertisement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Advertisement By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/advertisement/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"advertisement",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit advertisement Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile_number\" : 1234567890,\r\n    \"brand_logo\" : \"test123\",\r\n    \"brand_name\" : \"test\",\r\n    \"campaign_title\" : \"test\",\r\n    \"call_to_action\" : \"test\",\r\n    \"poster\" : \"test\",\r\n    \"poster_type\" : \"test\",\r\n    \"thumbnail\" : \"test\",\r\n    \"ad_clickURL\" : \"test\",\r\n    \"start_date_time\" : \"2020-08-29 14:10:57.058795\",\r\n    \"end_date_time\" : \"2020-09-29 14:10:57.058795\",\r\n    \"rank\" : \"1\",\r\n    \"app_place\" : \"test\",\r\n    \"duration_in_second\" : \"30\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/advertisement/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"advertisement",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add advertisement Data Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile_number\" : 1234567890,\r\n    \"brand_logo\" : \"test\",\r\n    \"brand_name\" : \"test\",\r\n    \"campaign_title\" : \"test\",\r\n    \"call_to_action\" : \"test\",\r\n    \"poster\" : \"test\",\r\n    \"poster_type\" : \"test\",\r\n    \"thumbnail\" : \"test\",\r\n    \"ad_clickURL\" : \"test\",\r\n    \"start_date_time\" : \"2020-08-29 14:10:57.058795\",\r\n    \"end_date_time\" : \"2020-09-29 14:10:57.058795\",\r\n    \"rank\" : \"1\",\r\n    \"app_place\" : \"test\",\r\n    \"duration_in_second\" : \"30\"\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/advertisement",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"advertisement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Advertisement",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/advertisement/11",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"advertisement",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Advertisement transaction",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI3NDIxODksImV4cCI6MTYzMjgyODU4OX0.bXQEKpz9gNQDWt4cOj1bPp-uaFXytF17hbMJ9xauoP4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/adtransaction-detail",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"adtransaction-detail"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WishList Offer",
+			"item": [
+				{
+					"name": "get All Wish List Offer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/wishlist/offer/set",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"wishlist",
+								"offer",
+								"set"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get wish list offer By Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI4MDU3NDksImV4cCI6MTYzMjg5MjE0OX0.QHKJQHZdgKGafZDf31lxstNIKtng1ks4S9ah1_18ylI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/wishlist",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"wishlist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add wish List offer",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shop",
+			"item": [
+				{
+					"name": "get all shop",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/shop",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get shope BY Id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzM1MDE5MTUsImV4cCI6MTYzMzU4ODMxNX0.-Sbpe6RU8Yqr_nMmQqyOVTQ74zGc97iatyBhL65t41A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/shope/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"shope",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Live Stream",
+			"item": [
+				{
+					"name": "Get all live stream",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token  188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/live-stream/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"live-stream",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organizer event Video",
+			"item": [
+				{
+					"name": "Organizer-user wise Event Video",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/Scalelot-DG/Downloads/[FreeCourseSite.com] Udemy - Django with React  An Ecommerce Website/1. Introduction/1. Introduction.mp4"
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Scalelot-DG/Downloads/irene-kredenets-0PUoXmsCSDQ-unsplash.jpg"
+								},
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/organizer/wise/event-video",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"organizer",
+								"wise",
+								"event-video"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Oraganizer  Event Video List",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "video",
+									"type": "file",
+									"src": "/C:/Users/Scalelot-DG/Downloads/[FreeCourseSite.com] Udemy - Django with React  An Ecommerce Website/2. Starting The Front End/1. React Setup.mp4",
+									"disabled": true
+								},
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/C:/Users/Scalelot-DG/Downloads/7b847d5571e6b86941843f81db564564ad056b94.png",
+									"disabled": true
+								},
+								{
+									"key": "is_active",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/organizer/event-video",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"organizer",
+								"event-video"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Raz\",\r\n    \"email\" : \"raz@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"confirm_password\": \"12345678\",\r\n    \"mobile\": \"9876543211\",\r\n    \"country_code\": \"+91\",\r\n    \"role\": \"Organiser\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/authentication/register/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"mobile\" : \"8780333608\",\r\n   \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/authentication/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"mobile\" : \"9328780020\",\r\n   \"password\":\"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/authentication/logout/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/authentication/user/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user update",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"rjb\",\r\n    \"email\": \"raj.scalelot@gmail.com\",\r\n    \"mobile\": \"9328780020\",\r\n    \"about\": \"demo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/authentication/user/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile\": 9328780020\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/authentication/sendOtp/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"authentication",
+								"sendOtp",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Our Products",
+			"item": [
+				{
+					"name": "Get Product",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/our-product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Topic",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/our-product/topic",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product",
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Microsoft (update)\",\r\n    \"link\": \"www.microsoft(update).com\",\r\n    \"icon\":null, \r\n    \"description\": \"microsoft (update) description\",\r\n    \"is_active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/our-product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Product Topic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "link",
+									"value": "www.instagram.com",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/C:/Users/Scalelot-DG/Downloads/stethoscope_PNG3.png"
+								},
+								{
+									"key": "is_active",
+									"value": "True",
+									"type": "text"
+								},
+								{
+									"key": "product_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/our-product/topic",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product",
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/our-product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product Topic",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/our-product/topic",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product",
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \" Festumevento App\",\r\n    \"description\": \"Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/our-product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add product Topic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{url}}/our-product/topic",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"our-product",
+								"topic"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "festumevento Docker",
+			"item": [
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "192.168.29.223:8080/api/v1/event/",
+							"host": [
+								"192",
+								"168",
+								"29",
+								"223"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"event",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/user/events/?lat=21.22139&long=72.827667&city=Surat&pincode=395004",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"events",
+								""
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "21.22139"
+								},
+								{
+									"key": "long",
+									"value": "72.827667"
+								},
+								{
+									"key": "city",
+									"value": "Surat"
+								},
+								{
+									"key": "pincode",
+									"value": "395004"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "get user wise shop",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/shop",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"shop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all users",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/authentication/users/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"authentication",
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all state",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/state/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"state",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get state by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\" : \"test1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/state/edit/39",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"state",
+						"edit",
+						"39"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save state",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5Nzg3MDl9.ujW5u5EbmVxFng1HpiINBLFfFOknLJ0d0WizLuBsFoA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\" : \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/state",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"state"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update state",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\" : \"testedit\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/state/200 ",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"state",
+						"200 "
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/state/edit/200",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"state",
+						"edit",
+						"200"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all city",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/city",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"city"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get city by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/city/20315",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"city",
+						"20315"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save city",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5Nzg3MDl9.ujW5u5EbmVxFng1HpiINBLFfFOknLJ0d0WizLuBsFoA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\" : \"test\",\r\n    \"city\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/city",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"city"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update city",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjc5ODE0OTR9.rAOu_cl-ErG1FUeHJNLHWrimQlreiAPfIELJUpxmCi8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"state\" : 1,\r\n    \"city\" : \"testedittt\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/city/1222",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"city",
+						"1222"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get shop categoryBy Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2Mjg4NDc1NjIsImV4cCI6MTYyODkzMzk2Mn0.NpeQjWGr7KqU0NOyk-juKRG2WiwCnK8qGdB81y-KJ7Y",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"key\" : \"abc\",\r\n    \"value\" : \"test\",\r\n    \"subvalue\" : \"test\",\r\n    \"morevalue\" : \"test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/shop-category/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"shop-category",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Coin summary",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzM1ODczMTEsImV4cCI6MTYzMzY3MzcxMX0.2R4H84EHXYUhHfcqeZv12ygnlXe4xjaVVJM7M9JuCww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/coin-summary?start_date=2021-8-2&end_date=2021-10-4&sort=DESC",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"coin-summary"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2021-8-2"
+						},
+						{
+							"key": "end_date",
+							"value": "2021-10-4"
+						},
+						{
+							"key": "sort",
+							"value": "DESC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Coin Ledger",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzM1ODczMTEsImV4cCI6MTYzMzY3MzcxMX0.2R4H84EHXYUhHfcqeZv12ygnlXe4xjaVVJM7M9JuCww",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{type : \"LOGIN\"}"
+				},
+				"url": {
+					"raw": "{{url}}/coin-ledger?type=LOGIN",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"coin-ledger"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "LOGIN"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get User wise Ledger",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIyODcxMzAsImV4cCI6MTYzMjM3MzUzMH0.X5n_a0s-TBE6GsH3K2B0ddAPQXiPzFowBmbZBB0u_S0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/get-userwise-coin-ledger/37",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"get-userwise-coin-ledger",
+						"37"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user Transaction",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzMDEyMTksImV4cCI6MTYzMjM4NzYxOX0.SOPZ1O8iHvZLd32TNDtoZWs5jSv2m07QtTjyf7d6P3c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/payment-transaction",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payment-transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get All offer Booking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzNzc2MjksImV4cCI6MTYzMjQ2NDAyOX0.2pxO-0v-qoXtYf8Oe9rqcZBiWxPR0CRblm_9CmyTgow",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/booking-offer",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"booking-offer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "offer wise get booking",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzIzNzc2MjksImV4cCI6MTYzMjQ2NDAyOX0.2pxO-0v-qoXtYf8Oe9rqcZBiWxPR0CRblm_9CmyTgow",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/Offer-wise-booking-ById/52",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"Offer-wise-booking-ById",
+						"52"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Payment Transaction List",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI0NzcwNzQsImV4cCI6MTYzMjU2MzQ3NH0.fr-5n1Xr5KsRtEaSl7CPOtyc_8cThNNG8YJuVydmSG0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/payment-transaction",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"payment-transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OTP list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzI5MTAxOTgsImV4cCI6MTYzMjk5NjU5OH0.ZZLWYn8Mpe0oc5akj-z03B17IFzg1odlzn-QLAZkFS4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/get-otp-list?mobile=9594533197",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"get-otp-list"
+					],
+					"query": [
+						{
+							"key": "mobile",
+							"value": "9594533197"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Invoice Listing",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzM0MDgzODEsImV4cCI6MTYzMzQ5NDc4MX0.dhQRwTj3TnIkEwjQJlJud4LATEYqLxAcNrHN7XdI-mo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/invoice",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"invoice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bank Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoxLCJpYXQiOjE2MzM0MTE1MTgsImV4cCI6MTYzMzQ5NzkxOH0.FXFf_iPQnzxXPTGgCAg5-FJIa76PuZ2Y3k-0ODMdxwQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/bank-detail",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"bank-detail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Entertainment",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/entertainment/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"entertainment",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Checklist (Booked)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/event/checklist",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"event",
+						"checklist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "chatbot",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "sender",
+						"value": "58",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "message",
+						"value": "\"oye\"",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "reply",
+						"value": "\"hi\"",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"msg\": \"Hi\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/chatbot/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"chatbot",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "marketing",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/marketing/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"marketing",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "faqs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Test 2\",\r\n    \"description\": \"test 2\",\r\n    \"is_active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/faqs/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"faqs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "old Customer data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 188dd301ad33430d7c3a8698cd4c12fa6b8eb590",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Scalelot-DG/Downloads/users_user.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/old-customer",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"old-customer"
+					],
+					"query": [
+						{
+							"key": "excel_file",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "pushnotification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "text",
+							"value": "hi",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "notification_type",
+							"value": "sms",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "forwhat",
+							"value": "test",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "date_time",
+							"value": "June 16, 2022, 6:58 a.m.",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "sms",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/pushnotification",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pushnotification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Currency Converter",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token bdc6151486c27e1b782d9a1742199c7cf36db1fd",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/convert/200",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"convert",
+						"200"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Wishlist offer",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/wishlist/offer/set?id=48",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"wishlist",
+						"offer",
+						"set"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "48"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Comment/Rating",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/comment/rating?type=",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"comment",
+						"rating"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Wishlist List",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/wishlist",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"wishlist"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Notify",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/notify/text?rid=58",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"notify",
+						"text"
+					],
+					"query": [
+						{
+							"key": "rid",
+							"value": "58"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/faq",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"faq"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Coin summary",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 365f4cf02b0f736e3a1efb3a59759bd6dd4a2a31",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://192.168.29.223:8080/api/v1/coin/summary",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"223"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"coin",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1/api/v1/event/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://192.168.29.121/api/v1/event/",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"29",
+						"121"
+					],
+					"path": [
+						"api",
+						"v1",
+						"event",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/user/events",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						"events"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "url"
+		}
+	]
+}

@@ -170,11 +170,10 @@ class UserLogout(APIView):
 
 class SendOtp(APIView):
     def post(self, request, **kwargs):
-        print('request')
         mobile_number = request.data.get("mobile")
         if mobile_number:
-            mobile = str(mobile_number)
-            if mobile:
+            mobile = models.User.objects.filter(mobile=str(mobile_number))
+            if not mobile.exists():
                 otp = generateOTP()
                 otpRes = send_otp_request(mobile, otp)
                 if otpRes["Status"] != "Error":
@@ -202,7 +201,7 @@ class SendOtp(APIView):
                 return Response(
                     {
                         "status": False,
-                        'error': "You are not register with us"
+                        'error': "Please enter valide phone number"
                     },
                     status=httpStatus.HTTP_400_BAD_REQUEST
                 )
@@ -218,48 +217,16 @@ class SendOtp(APIView):
 
 class VerifyOtp(APIView):
     def post(self, request, format='json'):
-        print('call')
-        # mobile_number = request.data.get("mobile")
-        # key = request.data.get("key")
         otp = request.data.get("otp")
 
         if otp:
-            # mobile_number = str(mobile_number)
-            # c_user = models.User.objects.filter(mobile__iexact=mobile_number)
             otp_log = models.OtpLog.objects.filter(otp=otp)
             if otp_log.exists():
-                # verify = verify_otp_request(key, otp)
-                # if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
-                # cc_user = c_user[0]
-                # if len(cc_user.refer_code) >= 6:
-                #     coin = 10
-                #     try:
-                #         refer_user = models.User.objects.filter(
-                #             my_refer_code=cc_user.refer_code
-                #         )
-                #         if refer_user.count() > 0:
-                #             refer_user = refer_user[0]
-                #             api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
-                #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
-                #             if cc_user.role == "Organiser":
-                #                 coin = 20
-                #             api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
-                #                                "User " + cc_user.name+" refer by " + refer_user.name+" as " + cc_user.role, "", "")
-                #     except models.User.DoesNotExist:
-                #         coin = 0
-                # c_user.update(verify=True)
                 return Response(
                     {
                         "status": True,
                     }
                 )
-            # else:
-            #     return Response(
-            #         {
-            #             "status": False,
-            #         },
-            #         status=httpStatus.HTTP_400_BAD_REQUEST
-            #     )
             else:
                 return Response(
                     {

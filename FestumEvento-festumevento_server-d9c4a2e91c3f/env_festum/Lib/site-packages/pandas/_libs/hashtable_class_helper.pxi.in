@@ -1046,7 +1046,7 @@ cdef class StringHashTable(HashTable):
             not None, then _additionally_ any value "val" satisfying
             val == na_value is considered missing.
         mask : ndarray[bool], optional
-            Not yet implemented for StringHashTable.
+            Not yet implementd for StringHashTable.
 
         Returns
         -------
@@ -1228,7 +1228,9 @@ cdef class PyObjectHashTable(HashTable):
             hash(val)
 
             if ignore_na and (
-                checknull(val)
+                (val is C_NA)
+                or (val != val)
+                or (val is None)
                 or (use_na_value and val == na_value)
             ):
                 # if missing values do not count as unique values (i.e. if

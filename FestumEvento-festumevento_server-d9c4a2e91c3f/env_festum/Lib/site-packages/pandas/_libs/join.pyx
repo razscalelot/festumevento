@@ -4,20 +4,23 @@ import numpy as np
 
 cimport numpy as cnp
 from numpy cimport (
+    float32_t,
+    float64_t,
+    int8_t,
+    int16_t,
+    int32_t,
     int64_t,
     intp_t,
     ndarray,
+    uint8_t,
+    uint16_t,
+    uint32_t,
     uint64_t,
 )
 
 cnp.import_array()
 
 from pandas._libs.algos import groupsort_indexer
-
-from pandas._libs.dtypes cimport (
-    numeric_object_t,
-    numeric_t,
-)
 
 
 @cython.wraparound(False)
@@ -254,23 +257,28 @@ def ffill_indexer(const intp_t[:] indexer) -> np.ndarray:
 # left_join_indexer, inner_join_indexer, outer_join_indexer
 # ----------------------------------------------------------------------
 
+ctypedef fused join_t:
+    float64_t
+    float32_t
+    object
+    int8_t
+    int16_t
+    int32_t
+    int64_t
+    uint64_t
+
+
 # Joins on ordered, unique indices
 
 # right might contain non-unique values
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def left_join_indexer_unique(
-    ndarray[numeric_object_t] left,
-    ndarray[numeric_object_t] right
-):
-    """
-    Both left and right are strictly monotonic increasing.
-    """
+def left_join_indexer_unique(ndarray[join_t] left, ndarray[join_t] right):
     cdef:
         Py_ssize_t i, j, nleft, nright
         ndarray[intp_t] indexer
-        numeric_object_t lval, rval
+        join_t lval, rval
 
     i = 0
     j = 0
@@ -311,23 +319,19 @@ def left_join_indexer_unique(
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def left_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] right):
+def left_join_indexer(ndarray[join_t] left, ndarray[join_t] right):
     """
     Two-pass algorithm for monotonic indexes. Handles many-to-one merges.
-
-    Both left and right are monotonic increasing, but at least one of them
-    is non-unique (if both were unique we'd use left_join_indexer_unique).
     """
     cdef:
         Py_ssize_t i, j, k, nright, nleft, count
-        numeric_object_t lval, rval
+        join_t lval, rval
         ndarray[intp_t] lindexer, rindexer
-        ndarray[numeric_object_t] result
+        ndarray[join_t] result
 
     nleft = len(left)
     nright = len(right)
 
-    # First pass is to find the size 'count' of our output indexers.
     i = 0
     j = 0
     count = 0
@@ -341,8 +345,6 @@ def left_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] 
             rval = right[j]
 
             if lval == rval:
-                # This block is identical across
-                #  left_join_indexer, inner_join_indexer, outer_join_indexer
                 count += 1
                 if i < nleft - 1:
                     if j < nright - 1 and right[j + 1] == rval:
@@ -407,14 +409,12 @@ def left_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] 
                     # end of the road
                     break
             elif lval < rval:
-                # i.e. lval not in right; we keep for left_join_indexer
                 lindexer[count] = i
                 rindexer[count] = -1
-                result[count] = lval
+                result[count] = left[i]
                 count += 1
                 i += 1
             else:
-                # i.e. rval not in left; we discard for left_join_indexer
                 j += 1
 
     return result, lindexer, rindexer
@@ -422,22 +422,19 @@ def left_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] 
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def inner_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] right):
+def inner_join_indexer(ndarray[join_t] left, ndarray[join_t] right):
     """
     Two-pass algorithm for monotonic indexes. Handles many-to-one merges.
-
-    Both left and right are monotonic increasing but not necessarily unique.
     """
     cdef:
         Py_ssize_t i, j, k, nright, nleft, count
-        numeric_object_t lval, rval
+        join_t lval, rval
         ndarray[intp_t] lindexer, rindexer
-        ndarray[numeric_object_t] result
+        ndarray[join_t] result
 
     nleft = len(left)
     nright = len(right)
 
-    # First pass is to find the size 'count' of our output indexers.
     i = 0
     j = 0
     count = 0
@@ -467,10 +464,8 @@ def inner_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t]
                     # end of the road
                     break
             elif lval < rval:
-                # i.e. lval not in right; we discard for inner_indexer
                 i += 1
             else:
-                # i.e. rval not in left; we discard for inner_indexer
                 j += 1
 
     # do it again now that result size is known
@@ -494,7 +489,7 @@ def inner_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t]
             if lval == rval:
                 lindexer[count] = i
                 rindexer[count] = j
-                result[count] = lval
+                result[count] = rval
                 count += 1
                 if i < nleft - 1:
                     if j < nright - 1 and right[j + 1] == rval:
@@ -511,10 +506,8 @@ def inner_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t]
                     # end of the road
                     break
             elif lval < rval:
-                # i.e. lval not in right; we discard for inner_indexer
                 i += 1
             else:
-                # i.e. rval not in left; we discard for inner_indexer
                 j += 1
 
     return result, lindexer, rindexer
@@ -522,22 +515,16 @@ def inner_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t]
 
 @cython.wraparound(False)
 @cython.boundscheck(False)
-def outer_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t] right):
-    """
-    Both left and right are monotonic increasing but not necessarily unique.
-    """
+def outer_join_indexer(ndarray[join_t] left, ndarray[join_t] right):
     cdef:
         Py_ssize_t i, j, nright, nleft, count
-        numeric_object_t lval, rval
+        join_t lval, rval
         ndarray[intp_t] lindexer, rindexer
-        ndarray[numeric_object_t] result
+        ndarray[join_t] result
 
     nleft = len(left)
     nright = len(right)
 
-    # First pass is to find the size 'count' of our output indexers.
-    # count will be length of left plus the number of elements of right not in
-    # left (counting duplicates)
     i = 0
     j = 0
     count = 0
@@ -640,14 +627,12 @@ def outer_join_indexer(ndarray[numeric_object_t] left, ndarray[numeric_object_t]
                     # end of the road
                     break
             elif lval < rval:
-                # i.e. lval not in right; we keep for outer_join_indexer
                 lindexer[count] = i
                 rindexer[count] = -1
                 result[count] = lval
                 count += 1
                 i += 1
             else:
-                # i.e. rval not in left; we keep for outer_join_indexer
                 lindexer[count] = -1
                 rindexer[count] = j
                 result[count] = rval
@@ -668,14 +653,26 @@ from pandas._libs.hashtable cimport (
     UInt64HashTable,
 )
 
+ctypedef fused asof_t:
+    uint8_t
+    uint16_t
+    uint32_t
+    uint64_t
+    int8_t
+    int16_t
+    int32_t
+    int64_t
+    float
+    float64_t
+
 ctypedef fused by_t:
     object
     int64_t
     uint64_t
 
 
-def asof_join_backward_on_X_by_Y(numeric_t[:] left_values,
-                                 numeric_t[:] right_values,
+def asof_join_backward_on_X_by_Y(asof_t[:] left_values,
+                                 asof_t[:] right_values,
                                  by_t[:] left_by_values,
                                  by_t[:] right_by_values,
                                  bint allow_exact_matches=True,
@@ -685,8 +682,8 @@ def asof_join_backward_on_X_by_Y(numeric_t[:] left_values,
         Py_ssize_t left_pos, right_pos, left_size, right_size, found_right_pos
         ndarray[intp_t] left_indexer, right_indexer
         bint has_tolerance = False
-        numeric_t tolerance_ = 0
-        numeric_t diff = 0
+        asof_t tolerance_ = 0
+        asof_t diff = 0
         HashTable hash_table
         by_t by_value
 
@@ -743,8 +740,8 @@ def asof_join_backward_on_X_by_Y(numeric_t[:] left_values,
     return left_indexer, right_indexer
 
 
-def asof_join_forward_on_X_by_Y(numeric_t[:] left_values,
-                                numeric_t[:] right_values,
+def asof_join_forward_on_X_by_Y(asof_t[:] left_values,
+                                asof_t[:] right_values,
                                 by_t[:] left_by_values,
                                 by_t[:] right_by_values,
                                 bint allow_exact_matches=1,
@@ -754,8 +751,8 @@ def asof_join_forward_on_X_by_Y(numeric_t[:] left_values,
         Py_ssize_t left_pos, right_pos, left_size, right_size, found_right_pos
         ndarray[intp_t] left_indexer, right_indexer
         bint has_tolerance = False
-        numeric_t tolerance_ = 0
-        numeric_t diff = 0
+        asof_t tolerance_ = 0
+        asof_t diff = 0
         HashTable hash_table
         by_t by_value
 
@@ -812,8 +809,8 @@ def asof_join_forward_on_X_by_Y(numeric_t[:] left_values,
     return left_indexer, right_indexer
 
 
-def asof_join_nearest_on_X_by_Y(numeric_t[:] left_values,
-                                numeric_t[:] right_values,
+def asof_join_nearest_on_X_by_Y(asof_t[:] left_values,
+                                asof_t[:] right_values,
                                 by_t[:] left_by_values,
                                 by_t[:] right_by_values,
                                 bint allow_exact_matches=True,
@@ -822,7 +819,7 @@ def asof_join_nearest_on_X_by_Y(numeric_t[:] left_values,
     cdef:
         Py_ssize_t left_size, right_size, i
         ndarray[intp_t] left_indexer, right_indexer, bli, bri, fli, fri
-        numeric_t bdiff, fdiff
+        asof_t bdiff, fdiff
 
     left_size = len(left_values)
     right_size = len(right_values)
@@ -865,8 +862,8 @@ def asof_join_nearest_on_X_by_Y(numeric_t[:] left_values,
 # asof_join
 # ----------------------------------------------------------------------
 
-def asof_join_backward(numeric_t[:] left_values,
-                       numeric_t[:] right_values,
+def asof_join_backward(asof_t[:] left_values,
+                       asof_t[:] right_values,
                        bint allow_exact_matches=True,
                        tolerance=None):
 
@@ -874,8 +871,8 @@ def asof_join_backward(numeric_t[:] left_values,
         Py_ssize_t left_pos, right_pos, left_size, right_size
         ndarray[intp_t] left_indexer, right_indexer
         bint has_tolerance = False
-        numeric_t tolerance_ = 0
-        numeric_t diff = 0
+        asof_t tolerance_ = 0
+        asof_t diff = 0
 
     # if we are using tolerance, set our objects
     if tolerance is not None:
@@ -918,8 +915,8 @@ def asof_join_backward(numeric_t[:] left_values,
     return left_indexer, right_indexer
 
 
-def asof_join_forward(numeric_t[:] left_values,
-                      numeric_t[:] right_values,
+def asof_join_forward(asof_t[:] left_values,
+                      asof_t[:] right_values,
                       bint allow_exact_matches=True,
                       tolerance=None):
 
@@ -927,8 +924,8 @@ def asof_join_forward(numeric_t[:] left_values,
         Py_ssize_t left_pos, right_pos, left_size, right_size
         ndarray[intp_t] left_indexer, right_indexer
         bint has_tolerance = False
-        numeric_t tolerance_ = 0
-        numeric_t diff = 0
+        asof_t tolerance_ = 0
+        asof_t diff = 0
 
     # if we are using tolerance, set our objects
     if tolerance is not None:
@@ -972,17 +969,18 @@ def asof_join_forward(numeric_t[:] left_values,
     return left_indexer, right_indexer
 
 
-def asof_join_nearest(numeric_t[:] left_values,
-                      numeric_t[:] right_values,
+def asof_join_nearest(asof_t[:] left_values,
+                      asof_t[:] right_values,
                       bint allow_exact_matches=True,
                       tolerance=None):
 
     cdef:
-        Py_ssize_t left_size, i
+        Py_ssize_t left_size, right_size, i
         ndarray[intp_t] left_indexer, right_indexer, bli, bri, fli, fri
-        numeric_t bdiff, fdiff
+        asof_t bdiff, fdiff
 
     left_size = len(left_values)
+    right_size = len(right_values)
 
     left_indexer = np.empty(left_size, dtype=np.intp)
     right_indexer = np.empty(left_size, dtype=np.intp)

@@ -12,16 +12,15 @@ from pandas._libs.tslibs import (
     NaTType,
     Tick,
 )
-from pandas._typing import npt
 
-_S = TypeVar("_S", bound=timedelta)
+_S = TypeVar("_S")
 
 def ints_to_pytimedelta(
-    arr: npt.NDArray[np.int64],  # const int64_t[:]
+    arr: np.ndarray,  # const int64_t[:]
     box: bool = ...,
-) -> npt.NDArray[np.object_]: ...
+) -> np.ndarray: ...  # np.ndarray[object]
 def array_to_timedelta64(
-    values: npt.NDArray[np.object_],
+    values: np.ndarray,  # ndarray[object]
     unit: str | None = ...,
     errors: str = ...,
 ) -> np.ndarray: ...  # np.ndarray[m8ns]
@@ -36,10 +35,7 @@ class Timedelta(timedelta):
 
     # error: "__new__" must return a class instance (got "Union[Timedelta, NaTType]")
     def __new__(  # type: ignore[misc]
-        cls: Type[_S],
-        value=...,
-        unit: str = ...,
-        **kwargs: int | float | np.integer | np.floating,
+        cls: Type[_S], value=..., unit=..., **kwargs
     ) -> _S | NaTType: ...
     @property
     def days(self) -> int: ...
@@ -53,9 +49,9 @@ class Timedelta(timedelta):
     @property
     def asm8(self) -> np.timedelta64: ...
     # TODO: round/floor/ceil could return NaT?
-    def round(self: _S, freq: str) -> _S: ...
-    def floor(self: _S, freq: str) -> _S: ...
-    def ceil(self: _S, freq: str) -> _S: ...
+    def round(self: _S, freq) -> _S: ...
+    def floor(self: _S, freq) -> _S: ...
+    def ceil(self: _S, freq) -> _S: ...
     @property
     def resolution_string(self) -> str: ...
     def __add__(self, other: timedelta) -> timedelta: ...

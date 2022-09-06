@@ -1,5 +1,3 @@
-import warnings
-
 import cython
 
 from cpython.datetime cimport (
@@ -250,7 +248,7 @@ def array_with_unit_to_datetime(
         # if we have nulls that are not type-compat
         # then need to iterate
 
-        if values.dtype.kind in ["i", "f", "u"]:
+        if values.dtype.kind == "i" or values.dtype.kind == "f":
             iresult = values.astype("i8", copy=False)
             # fill missing values by comparing to NPY_NAT
             mask = iresult == NPY_NAT
@@ -265,7 +263,7 @@ def array_with_unit_to_datetime(
             ):
                 raise OutOfBoundsDatetime(f"cannot convert input with unit '{unit}'")
 
-            if values.dtype.kind in ["i", "u"]:
+            if values.dtype.kind == "i":
                 result = (iresult * m).astype("M8[ns]")
 
             elif values.dtype.kind == "f":
@@ -518,7 +516,7 @@ cpdef array_to_datetime(
                     if string_to_dts_failed:
                         # An error at this point is a _parsing_ error
                         # specifically _not_ OutOfBoundsDatetime
-                        if _parse_today_now(val, &iresult[i], utc):
+                        if _parse_today_now(val, &iresult[i]):
                             continue
                         elif require_iso8601:
                             # if requiring iso8601 strings, skip trying
@@ -757,23 +755,14 @@ cdef _array_to_datetime_object(
     return oresult, None
 
 
-cdef inline bint _parse_today_now(str val, int64_t* iresult, bint utc):
+cdef inline bint _parse_today_now(str val, int64_t* iresult):
     # We delay this check for as long as possible
     # because it catches relatively rare cases
-    if val == "now":
+    if val == 'now':
+        # Note: this is *not* the same as Timestamp('now')
         iresult[0] = Timestamp.utcnow().value
-        if not utc:
-            # GH#18705 make sure to_datetime("now") matches Timestamp("now")
-            warnings.warn(
-                "The parsing of 'now' in pd.to_datetime without `utc=True` is "
-                "deprecated. In a future version, this will match Timestamp('now') "
-                "and Timestamp.now()",
-                FutureWarning,
-                stacklevel=1,
-            )
-
         return True
-    elif val == "today":
+    elif val == 'today':
         iresult[0] = Timestamp.today().value
         return True
     return False

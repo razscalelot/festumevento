@@ -8,14 +8,14 @@ import numpy as np
 from pandas._typing import (
     ArrayLike,
     Dtype,
-    npt,
 )
 
 STR_NA_VALUES: set[str]
 
 def sanitize_objects(
-    values: npt.NDArray[np.object_],
+    values: np.ndarray,  # ndarray[object]
     na_values: set,
+    convert_empty: bool = ...,
 ) -> int: ...
 
 class TextReader:

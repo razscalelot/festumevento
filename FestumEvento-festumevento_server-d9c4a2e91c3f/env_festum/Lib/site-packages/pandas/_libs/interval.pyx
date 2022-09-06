@@ -516,9 +516,9 @@ def intervals_to_interval_bounds(ndarray intervals, bint validate_closed=True):
 
     Returns
     -------
-    tuple of
-        left : ndarray
-        right : ndarray
+    tuple of tuples
+        left : (ndarray, object, array)
+        right : (ndarray, object, array)
         closed: str
     """
     cdef:
