@@ -13,6 +13,7 @@ urlpatterns = [
     path('event/register/', views.EventRegister.as_view()),
     path('event/', views.SetEvent.as_view()),
     path('event/new/', views.Events.as_view()),
+    path('event/aboutevent/', views.AboutEvent.as_view()),
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),
     path('event/pricematrix/', views.EventPriceMatrix.as_view()),

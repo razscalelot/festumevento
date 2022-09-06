@@ -181,6 +181,29 @@ class SubscriptionMasterView(APIView):
         return Response({"delete": True, "message": "Deleted Successfully."}, status=status.HTTP_200_OK)
 
 
+class AboutEvent(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = AboutEventSerializer(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            model_obj = serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 "error": str(verror)
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
 class Events(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -278,7 +301,8 @@ class SetEvent(APIView):
 
     def get(self, request):
         sub = EventRegistration.objects.filter(
-            is_active=True).order_by('start_date')
+            is_active=True)
+        print('sub', sub)
         serializer = EventRegistrationSerializer2(sub, many=True)
         data = serializer.data
         for event in data:
@@ -910,7 +934,6 @@ class UserEventsView(APIView):
                 print('lng', min_lat, max_lat, min_lng, min_lng)
                 events = EventRegistration.objects.filter(
                     Q(latitude__gte=min_lat, latitude__lte=max_lat, longitude__gte=min_lng, longitude__lte=max_lng))
-
 
             print('event', events)
 

@@ -49,6 +49,18 @@ class Event(models.Model):
         return self.name
 
 
+class AboutEvent(models.Model):
+    event = models.ForeignKey(Event, related_name='about', on_delete=models.CASCADE)
+    start_to_end_date = models.CharField(max_length=255)
+    start_time = models.CharField(max_length=100)
+    end_time = models.CharField(max_length=100)
+    about_event = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.event.name
+
+
 class SubscriptionMaster(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=7)
     no_of_post = models.IntegerField()

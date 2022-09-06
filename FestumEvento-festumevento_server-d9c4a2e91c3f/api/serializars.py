@@ -127,12 +127,18 @@ class StateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AboutEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AboutEvent
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
-                  'is_other', 'user', 'is_active')
+                  'is_other', 'user', 'is_active', 'about')
 
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
