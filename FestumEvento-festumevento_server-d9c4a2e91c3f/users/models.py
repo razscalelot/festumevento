@@ -92,7 +92,10 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     mobile = models.CharField(max_length=10, unique=True)
     country_code = models.CharField(max_length=6)
-    role = models.CharField(max_length=50, unique=False)
+    user_type_data = ((0, 'superadmin'), (1, 'admin'), (2, 'subadmin'),
+                      (3, 'executive'), (4, 'organizer'), (5, 'user'))
+    role = models.CharField(
+        max_length=250, default=5, choices=user_type_data)
     about = models.TextField(null=True, blank=True)
     admin = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
