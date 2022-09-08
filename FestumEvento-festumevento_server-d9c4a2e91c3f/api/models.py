@@ -124,28 +124,36 @@ class DiscountChoice(Enum):
         return [DiscountChoice.percentage, DiscountChoice.amount]
 
 
-class EventRegistration(models.Model):
-    location_type = models.CharField(max_length=100)
-    occupancy_type = models.CharField(max_length=50)
-    capacity = models.IntegerField()
-    location_address = models.CharField(max_length=500)
-    address = models.CharField(max_length=2000)
-    city = models.CharField(max_length=255, null=True)
-    state = models.CharField(max_length=255, null=True)
-    pincode = models.PositiveIntegerField(
-        validators=[MaxValueValidator(999999)], null=True)
-    longitude = models.DecimalField(
-        max_digits=22, decimal_places=16, null=True)
-    latitude = models.DecimalField(max_digits=22, decimal_places=16, null=True)
-    poster = models.ImageField(upload_to='media/image/poster')
+class EventRegistration(models.Model):    
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
     start_date = models.DateField()
     end_date = models.DateField()
     start_time = models.TimeField()
     end_time = models.TimeField()
+
+    flat_no = models.CharField(max_length=100, null=True, blank=True)
+    street_name = models.CharField(max_length=255, null=True, blank=True)
+    area_name = models.CharField(max_length=255, null=True, blank=True)
+    location_address = models.CharField(max_length=500, null=True, blank=True)
+    address = models.CharField(max_length=2000)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    pincode = models.PositiveIntegerField(
+        validators=[MaxValueValidator(999999)])
+    longitude = models.DecimalField(
+        max_digits=22, decimal_places=16, null=True)
+    latitude = models.DecimalField(max_digits=22, decimal_places=16, null=True)
+    
+    permission_letter = models.FileField(upload_to='media/file/permission_letter') 
     accept_booking = models.BooleanField(default=False)
-    permission_letter = models.FileField(
-        upload_to='media/file/permission_letter')   
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    location_type = models.CharField(max_length=100)
+    occupancy_type = models.CharField(max_length=50)
+
+    capacity = models.IntegerField()
+    
+    poster = models.ImageField(upload_to='media/image/poster')  
     status = models.CharField(max_length=100, choices=[(
         tag.value, tag) for tag in StatusChoice.all()])
     is_verify = models.BooleanField(default=False)
@@ -182,16 +190,17 @@ class PriceMatrix(models.Model):
 
 class EventImage(models.Model):
     image = models.ImageField(upload_to='media/image/events')
+    description = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        # call the compress function
-        new_image = compress(self.image)
-        # set self.image to new_image
-        self.image = new_image
-        # save
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     # call the compress function
+    #     new_image = compress(self.image)
+    #     # set self.image to new_image
+    #     self.image = new_image
+    #     # save
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return nullStr(self.image.name)
@@ -199,21 +208,82 @@ class EventImage(models.Model):
 
 class EventVideo(models.Model):
     video = models.FileField(upload_to='media/video/events')
+    description = models.TextField()
     thumbnail = models.ImageField(upload_to='media/video/thumbnail/events')
     timestamp = models.DateTimeField(auto_now_add=True)
     event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        # call the compress function
-        #new_image = compress(self.image)
-        # set self.image to new_image
+    # def save(self, *args, **kwargs):
+    #     # call the compress function
+    #     #new_image = compress(self.image)
+    #     # set self.image to new_image
 
-        #self.image = new_image
-        # save
-        super().save(*args, **kwargs)
+    #     #self.image = new_image
+    #     # save
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return nullStr(self.video.name)
+
+class EventCompanyDetails(models.Model):
+    event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    gst = models.FileField(max_length=255, upload_to='image/events/company/gst')
+    contact_no = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    about = models.TextField()
+    flat_no = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
+    area = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    pincode = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+class EventCompanyImage(models.Model):
+    company_id = models.ForeignKey(EventCompanyDetails, related_name='image', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='image/events/company', blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return nullStr(self.image.name)
+
+
+class EventCompanyVideo(models.Model):
+    company_id = models.ForeignKey(EventCompanyDetails, related_name='video', on_delete=models.CASCADE)
+    video = models.ImageField(upload_to='image/events/company/video', blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return nullStr(self.video.name)
+
+
+class EventPersonalDetails(models.Model):
+    event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255)
+    mobile_no = models.CharField(max_length=20)
+    is_mobile_hidden = models.BooleanField(default=False)
+    alt_mobile_no = models.CharField(max_length=20, blank=True, null=True)
+    is_alt_mobile_hidden = models.BooleanField(default=False)
+    email = models.CharField(max_length=100)
+    is_email_hidden = models.BooleanField(default=True)
+    flat_no = models.CharField(max_length=100, blank=True, null=True)
+    street = models.CharField(max_length=100, blank=True, null=True)
+    area = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pincode = models.CharField(max_length=50)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.full_name
 
 
 class ProductTypeChoice(Enum):
@@ -815,11 +885,13 @@ class SeatingArrangementBooking(models.Model):
     seat = models.ForeignKey(SeatingArrangementMaster, on_delete=models.CASCADE)
     occasion = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
-    person_capacity = models.IntegerField()
+
     no_of_seat = models.IntegerField()
-    price_per_seat = models.DecimalField(decimal_places=2, max_digits=7)
     seat_location = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatLocationChoice.all()])
     seat_side = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatSideChoice.all()])
+    person_capacity = models.IntegerField()
+
+    price_per_seat = models.DecimalField(decimal_places=2, max_digits=7)
     description = models.CharField(max_length=2000, null=True,blank=True)
     seat_food = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatFoodChoice.all()])
     seat_food_description = models.CharField(max_length=2000, null=True,blank=True)

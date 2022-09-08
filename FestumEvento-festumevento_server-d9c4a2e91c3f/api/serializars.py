@@ -1,7 +1,4 @@
 # from dataclasses import fields
-from pyexpat import model
-from numpy import product
-from requests import request
 from rest_framework import serializers
 from .models import *
 from users.models import User

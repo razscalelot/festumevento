@@ -362,7 +362,8 @@ class EventRegister(APIView):
         else:
             return Response(
                 {"status": vstatus,
-                 "error": str(verror)
+                #  "error": str(verror)
+                 "error": serializer.errors
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     def get(self, request):

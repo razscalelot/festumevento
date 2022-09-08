@@ -1,6 +1,5 @@
 import requests
 import json
-from requests import auth
 from requests.auth import HTTPBasicAuth 
 
 
