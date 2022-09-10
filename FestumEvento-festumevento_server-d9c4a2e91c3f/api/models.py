@@ -50,7 +50,8 @@ class Event(models.Model):
 
 
 class AboutEvent(models.Model):
-    event = models.ForeignKey(Event, related_name='about', on_delete=models.CASCADE)
+    event = models.ForeignKey(
+        Event, related_name='about', on_delete=models.CASCADE)
     start_to_end_date = models.CharField(max_length=255)
     start_time = models.CharField(max_length=100)
     end_time = models.CharField(max_length=100)
@@ -124,7 +125,7 @@ class DiscountChoice(Enum):
         return [DiscountChoice.percentage, DiscountChoice.amount]
 
 
-class EventRegistration(models.Model):    
+class EventRegistration(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     start_date = models.DateField()
@@ -144,16 +145,17 @@ class EventRegistration(models.Model):
     longitude = models.DecimalField(
         max_digits=22, decimal_places=16, null=True)
     latitude = models.DecimalField(max_digits=22, decimal_places=16, null=True)
-    
-    permission_letter = models.FileField(upload_to='media/file/permission_letter') 
+
+    permission_letter = models.FileField(
+        upload_to='media/file/permission_letter')
     accept_booking = models.BooleanField(default=False)
 
     location_type = models.CharField(max_length=100)
     occupancy_type = models.CharField(max_length=50)
 
     capacity = models.IntegerField()
-    
-    poster = models.ImageField(upload_to='media/image/poster')  
+
+    poster = models.ImageField(upload_to='media/image/poster')
     status = models.CharField(max_length=100, choices=[(
         tag.value, tag) for tag in StatusChoice.all()])
     is_verify = models.BooleanField(default=False)
@@ -225,10 +227,12 @@ class EventVideo(models.Model):
     def __str__(self):
         return nullStr(self.video.name)
 
+
 class EventCompanyDetails(models.Model):
     event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    gst = models.FileField(max_length=255, upload_to='image/events/company/gst')
+    gst = models.FileField(
+        max_length=255, upload_to='image/events/company/gst')
     contact_no = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     about = models.TextField()
@@ -245,20 +249,22 @@ class EventCompanyDetails(models.Model):
 
 
 class EventCompanyImage(models.Model):
-    company_id = models.ForeignKey(EventCompanyDetails, related_name='image', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='image/events/company', blank=True, null=True)
+    company_id = models.ForeignKey(
+        EventCompanyDetails, related_name='image', on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='image/events/company', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
 
     def __str__(self):
         return nullStr(self.image.name)
 
 
 class EventCompanyVideo(models.Model):
-    company_id = models.ForeignKey(EventCompanyDetails, related_name='video', on_delete=models.CASCADE)
-    video = models.ImageField(upload_to='image/events/company/video', blank=True, null=True)
+    company_id = models.ForeignKey(
+        EventCompanyDetails, related_name='video', on_delete=models.CASCADE)
+    video = models.ImageField(
+        upload_to='image/events/company/video', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
 
     def __str__(self):
         return nullStr(self.video.name)
@@ -280,7 +286,6 @@ class EventPersonalDetails(models.Model):
     state = models.CharField(max_length=50)
     pincode = models.CharField(max_length=50)
     timestamp = models.DateTimeField(auto_now_add=True)
-
 
     def __str__(self):
         return self.full_name
@@ -822,16 +827,18 @@ class Notification(models.Model):
 
 
 class OrganizerEventVideo(models.Model):
-    user = models.ForeignKey(User, related_name='organizereventvideo', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, related_name='organizereventvideo', on_delete=models.CASCADE)
     video = models.FileField(upload_to='media/video/organizereventvideo')
-    thumbnail = models.ImageField(upload_to='media/video/thumbnail/organizereventvideo')
+    thumbnail = models.ImageField(
+        upload_to='media/video/thumbnail/organizereventvideo')
     timestamp = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
 
 def is_svg(file):
     tag = None
-    #with open(filename, "r") as f:
+    # with open(filename, "r") as f:
     try:
         for event, el in et.iterparse(file, ('start',)):
             tag = el.tag
@@ -840,64 +847,95 @@ def is_svg(file):
         pass
     return tag == '{http://www.w3.org/2000/svg}svg'
 
+
 def validate_svg(file):
     if not is_svg(file):
         raise ValidationError("File not svg")
 
+
 class SeatingArrangementMaster(models.Model):
     name = models.CharField(max_length=200)
-    svg = models.FileField(upload_to='media/image/events/seating_arrangement', validators=[validate_svg])
+    svg = models.FileField(
+        upload_to='media/image/events/seating_arrangement', validators=[validate_svg])
     timestamp = models.DateTimeField(auto_now_add=True)
-    sequence = models.IntegerField(null=True,default=0)
+    sequence = models.IntegerField(null=True, default=0)
     is_active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.name
 
-class SeatLocationChoice(Enum):
-    front = "FRONT"
-    center = "CENTER"
-    last = "LAST"
+
+class SeatVerticalLocationChoice(Enum):
+    none = "NONE"
+    top = "TOP"
+    bottom = "BOTTOM"
 
     @classmethod
     def all(cls):
-        return [SeatLocationChoice.front, SeatLocationChoice.center, SeatLocationChoice.last]
+        return [SeatVerticalLocationChoice.none, SeatVerticalLocationChoice.top, SeatVerticalLocationChoice.bottom]
 
-class SeatSideChoice(Enum):
+
+class SeatHorizontalLocationChoice(Enum):
     none = "NONE"
     left = "LEFT"
     right = "RIGHT"
 
     @classmethod
     def all(cls):
-        return [SeatSideChoice.none, SeatSideChoice.left, SeatSideChoice.right]
+        return [SeatHorizontalLocationChoice.none, SeatHorizontalLocationChoice.left, SeatHorizontalLocationChoice.right]
+
 
 class SeatFoodChoice(Enum):
     veg = "VEG"
     nonveg = "NONVEG"
     both = "BOTH"
-    none =  "NONE"
+    none = "NONE"
 
     @classmethod
     def all(cls):
         return [SeatFoodChoice.veg, SeatFoodChoice.nonveg, SeatFoodChoice.both, SeatFoodChoice.none]
 
 
+class BookingAcceptance(Enum):
+    per_table = "PERTABLE"
+    per_person = "PERPERSON"
+
+    @classmethod
+    def all(cls):
+        return [BookingAcceptance.per_table, BookingAcceptance.per_person]
+
+
 class SeatingArrangementBooking(models.Model):
-    seat = models.ForeignKey(SeatingArrangementMaster, on_delete=models.CASCADE)
+    seat = models.ForeignKey(SeatingArrangementMaster,
+                             on_delete=models.CASCADE)
     occasion = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
     name = models.CharField(max_length=500)
 
     no_of_seat = models.IntegerField()
-    seat_location = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatLocationChoice.all()])
-    seat_side = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatSideChoice.all()])
-    person_capacity = models.IntegerField()
-
+    seat_location = models.CharField(max_length=100, choices=[(
+        tag.value, tag) for tag in SeatVerticalLocationChoice.all()])
+    seat_side = models.CharField(max_length=100, choices=[(
+        tag.value, tag) for tag in SeatHorizontalLocationChoice.all()])
+    table_person_capacity = models.IntegerField(null=True, blank=True)
+    person_capacity = models.IntegerField(null=True, blank=True)
+    table_price = models.IntegerField(null=True, blank=True)
     price_per_seat = models.DecimalField(decimal_places=2, max_digits=7)
-    description = models.CharField(max_length=2000, null=True,blank=True)
-    seat_food = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in SeatFoodChoice.all()])
-    seat_food_description = models.CharField(max_length=2000, null=True,blank=True)
-    seat_equipment = models.BooleanField(default=False)
-    seat_equipment_description = models.CharField(max_length=2000, null=True,blank=True)
     total_booking_count = models.IntegerField(null=True)
+    description = models.CharField(max_length=2000, null=True, blank=True)
+    booking_acceptance = models.CharField(
+        max_length=100, choices=[(tag.value, tag) for tag in BookingAcceptance.all()])
+
+    seat_food = models.CharField(max_length=100, choices=[(
+        tag.value, tag) for tag in SeatFoodChoice.all()])
+    seat_food_description = models.CharField(
+        max_length=2000, null=True, blank=True)
+
+    seat_equipment = models.BooleanField(default=False)
+    seat_equipment_description = models.CharField(
+        max_length=2000, null=True, blank=True)
+
+    def __str__(self):
+        return self.seat.name
 
 
 class FrequentlyAskedQuestions(models.Model):
@@ -906,12 +944,13 @@ class FrequentlyAskedQuestions(models.Model):
     is_active = models.BooleanField(default=True)
     sequence = models.IntegerField(null=True)
     timestampe = models.DateTimeField(auto_now_add=True,)
-    start_date = models.DateTimeField(auto_now_add=True,null=True)
+    start_date = models.DateTimeField(auto_now_add=True, null=True)
     end_date = models.DateTimeField(null=True)
 
 
 class WishlistOccation(models.Model):
-    occasion = models.ForeignKey(EventRegistration, on_delete=models.CASCADE, null=True)
+    occasion = models.ForeignKey(
+        EventRegistration, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     timestampe = models.DateTimeField(auto_now_add=True,)
@@ -925,14 +964,18 @@ class WishlistOffer(models.Model):
 
 
 class CommentsAndRating(models.Model):
-    user= models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.DecimalField(max_digits=22, decimal_places=16,default=0.0)
-    avg_rating = models.DecimalField(max_digits=22, decimal_places=16,default=0.0)
-    user_rating = models.DecimalField(max_digits=22, decimal_places=16,default=0.0)
-    avg_user_rating = models.DecimalField(max_digits=22, decimal_places=16,default=0.0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.DecimalField(max_digits=22, decimal_places=16, default=0.0)
+    avg_rating = models.DecimalField(
+        max_digits=22, decimal_places=16, default=0.0)
+    user_rating = models.DecimalField(
+        max_digits=22, decimal_places=16, default=0.0)
+    avg_user_rating = models.DecimalField(
+        max_digits=22, decimal_places=16, default=0.0)
     title = models.CharField(max_length=254, blank=False, null=False)
     review = models.CharField(max_length=2000, blank=True, null=True)
-    occasion = models.ForeignKey(EventRegistration, on_delete=models.CASCADE, null=True)
+    occasion = models.ForeignKey(
+        EventRegistration, on_delete=models.CASCADE, null=True)
     offer = models.ForeignKey(LocalOffer, on_delete=models.CASCADE, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_replay = models.BooleanField(default=False)
@@ -955,8 +998,10 @@ class OurProduct(models.Model):
 
 
 class Topic(models.Model):
-    product = models.ForeignKey(OurProduct, related_name="topic", on_delete=models.CASCADE)
+    product = models.ForeignKey(
+        OurProduct, related_name="topic", on_delete=models.CASCADE)
     link = models.CharField(max_length=255, blank=True, null=True)
-    icon = models.ImageField(upload_to='media/image/product/icon', blank=True, null=True)
+    icon = models.ImageField(
+        upload_to='media/image/product/icon', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     timestampe = models.DateTimeField(auto_now_add=True)

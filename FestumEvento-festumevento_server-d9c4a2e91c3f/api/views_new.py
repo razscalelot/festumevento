@@ -219,9 +219,7 @@ class SeatingArrangementBookingView(APIView):
     def get(self, request):
         occasion = int(str( request.GET.get('occasion', 0)))
 
-        seats= SeatingArrangementBooking.objects.filter(
-            occasion_id = occasion
-        )
+        seats= SeatingArrangementBooking.objects.all()
 
         seats_ser = SeatingArrangementBookingSerializer(seats, many=True)
         return Response({"status": True, "detail": seats_ser.data}, status=status.HTTP_201_CREATED)
