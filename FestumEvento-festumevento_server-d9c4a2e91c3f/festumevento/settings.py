@@ -186,6 +186,22 @@ DATABASES = {
         }
 }
 
+# --------------Scalelot-----------------------
+# DATABASES = {
+#     'default':
+#         {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'festumevento_uat',
+#             'USER': 'festumevento_user',
+#             'PASSWORD': 'festumevento_p',
+#             'HOST': "localhost",
+#             'PORT': "3306",
+#             'OPTIONS': {
+#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#             }
+#         }
+# }
+
 # DOCKER CONFIGRATIONS
 # DATABASES = {
 #     'default':

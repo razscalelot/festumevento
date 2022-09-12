@@ -10,10 +10,20 @@ urlpatterns = [
     path('payment/', views.Payment.as_view()),
     path('usersubscription/', views.UserSubscription.as_view()),
     path('subscription/', views.SubscriptionMasterView.as_view()),
+
+    # Register Event
     path('event/register/', views.EventRegister.as_view()),
-    path('event/', views.SetEvent.as_view()),
-    path('event/new/', views.Events.as_view()),
-    path('event/aboutevent/', views.AboutEvent.as_view()),
+
+    # Get all events
+    path('events/', views.SetEvent.as_view()),
+
+    # Get org events 
+    path('org/event/', views.OrgEvents.as_view()),
+    path('org/event/add', views.OrgEvents.as_view()),
+    path('org/event/<int:id>', views.OrgEvents.as_view()),
+    path('org/event/delete/<int:id>', views.OrgEvents.as_view()),
+
+    # path('event/<int:id>', views.Events.as_view()),
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),
     path('event/pricematrix/', views.EventPriceMatrix.as_view()),

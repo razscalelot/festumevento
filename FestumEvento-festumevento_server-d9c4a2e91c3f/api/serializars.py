@@ -124,10 +124,10 @@ class StateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AboutEventSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AboutEvent
-        fields = '__all__'
+# class AboutEventSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = AboutEvent
+#         fields = '__all__'
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -135,7 +135,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
-                  'is_other', 'user', 'is_active', 'about')
+                  'is_other', 'user', 'is_active')
 
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
@@ -183,8 +183,8 @@ class EventVideoSerializer(serializers.ModelSerializer):
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
     video = serializers.SerializerMethodField()
-    city = serializers.SerializerMethodField()
-    state = serializers.SerializerMethodField()
+    # city = serializers.SerializerMethodField()
+    # state = serializers.SerializerMethodField()
     occasion_id = serializers.SerializerMethodField()
 
     start_date = serializers.DateField(
@@ -202,17 +202,17 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
 
-    @staticmethod
-    def get_city(obj):
-        city_id = City.objects.filter(id=obj.city)
-        city = CitySerializer(city_id, many=True)
-        return city.data
+    # @staticmethod
+    # def get_city(obj):
+    #     city_id = City.objects.filter(id=obj.city)
+    #     city = CitySerializer(city_id, many=True)
+    #     return city.data
 
-    @staticmethod
-    def get_state(obj):
-        state_id = State.objects.filter(id=obj.state)
-        state = StateSerializer(state_id, many=True)
-        return state.data
+    # @staticmethod
+    # def get_state(obj):
+    #     state_id = State.objects.filter(id=obj.state)
+    #     state = StateSerializer(state_id, many=True)
+    #     return state.data
 
     @staticmethod
     def get_image(obj):

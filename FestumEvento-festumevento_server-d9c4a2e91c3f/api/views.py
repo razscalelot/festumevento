@@ -181,37 +181,37 @@ class SubscriptionMasterView(APIView):
         return Response({"delete": True, "message": "Deleted Successfully."}, status=status.HTTP_200_OK)
 
 
-class AboutEvent(APIView):
+# class AboutEvent(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         vstatus = False
+#         verror = None
+#         serializer = AboutEventSerializer(data=request.data)
+
+#         try:
+#             vstatus = serializer.is_valid(raise_exception=True)
+#         except Exception as error:
+#             verror = error
+
+#         if vstatus:
+#             model_obj = serializer.save()
+#             return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(
+#                 {"status": vstatus,
+#                  "error": str(verror)
+#                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class OrgEvents(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        vstatus = False
-        verror = None
-        serializer = AboutEventSerializer(data=request.data)
-
-        try:
-            vstatus = serializer.is_valid(raise_exception=True)
-        except Exception as error:
-            verror = error
-
-        if vstatus:
-            model_obj = serializer.save()
-            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+    def get(self, request, id=0):
+        if id != 0:
+            events = Event.objects.filter(is_active=True, user=request.user, id=id)
         else:
-            return Response(
-                {"status": vstatus,
-                 "error": str(verror)
-                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
-class Events(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        events = Event.objects.filter(
-            is_active=True,
-            user=request.user
-        )
+            events = Event.objects.filter(is_active=True, user=request.user)
 
         events = OrgEventSerializer(events, many=True)
         data = events.data
@@ -222,12 +222,8 @@ class Events(APIView):
             status=status.HTTP_200_OK
         )
 
-    def delete(self, request):
-
-        event = Event.objects.get(
-            id=request.data["event_id"],
-            user=request.user
-        )
+    def delete(self, request, id):
+        event = Event.objects.get(id=id, user=request.user)
         event.is_active = False
         event.save()
         return Response(
@@ -240,23 +236,23 @@ class Events(APIView):
     def post(self, request):
         if not request.POST._mutable:
             request.POST._mutable = True
-        request.data["user"] = request._user.id
+        request.data["user"] = request._user.id        
+        serializer = EventSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        print("new")       
+        return Response({"status": True}, status=status.HTTP_201_CREATED)
+        
 
-        if request.data.get("id") == None:
-            serializer = EventSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            print("new")
-        else:
-            event = Event.objects.get(id=request.data["id"])
-            event.name = request.data["name"]
-            event.event_type = request.data["event_type"]
-            event.event_category = request.data["event_category"]
-            event.is_other = request.data["is_other"]
-            event.is_active = True
-            event.save()
-            print("old")
-
+    def put(self, request, id):
+        event = Event.objects.get(id=id)
+        event.name = request.data["name"]
+        event.event_type = request.data["event_type"]
+        event.event_category = request.data["event_category"]
+        event.is_other = request.data["is_other"]
+        event.is_active = True
+        event.save()
+        print("old")
         return Response({"status": True}, status=status.HTTP_201_CREATED)
 
 
@@ -369,7 +365,6 @@ class EventRegister(APIView):
     def get(self, request):
         sub = EventRegistration.objects.filter(
             is_active=True,
-            event__user=request.user
         )
 
         serializer = EventRegistrationSerializer(sub, many=True)

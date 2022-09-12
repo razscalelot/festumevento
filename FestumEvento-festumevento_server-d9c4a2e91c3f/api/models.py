@@ -49,17 +49,17 @@ class Event(models.Model):
         return self.name
 
 
-class AboutEvent(models.Model):
-    event = models.ForeignKey(
-        Event, related_name='about', on_delete=models.CASCADE)
-    start_to_end_date = models.CharField(max_length=255)
-    start_time = models.CharField(max_length=100)
-    end_time = models.CharField(max_length=100)
-    about_event = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+# class AboutEvent(models.Model):
+#     event = models.ForeignKey(
+#         Event, related_name='about', on_delete=models.CASCADE)
+#     start_to_end_date = models.CharField(max_length=255)
+#     start_time = models.CharField(max_length=100)
+#     end_time = models.CharField(max_length=100)
+#     about_event = models.TextField()
+#     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.event.name
+#     def __str__(self):
+#         return self.event.name
 
 
 class SubscriptionMaster(models.Model):
@@ -897,12 +897,12 @@ class SeatFoodChoice(Enum):
 
 
 class BookingAcceptance(Enum):
-    per_table = "PERTABLE"
-    per_person = "PERPERSON"
+    pertable = "PERTABLE"
+    perperson = "PERPERSON"
 
     @classmethod
     def all(cls):
-        return [BookingAcceptance.per_table, BookingAcceptance.per_person]
+        return [BookingAcceptance.pertable, BookingAcceptance.perperson]
 
 
 class SeatingArrangementBooking(models.Model):
