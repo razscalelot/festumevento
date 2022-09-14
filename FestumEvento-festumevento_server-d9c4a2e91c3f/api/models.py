@@ -1,4 +1,5 @@
 from email.policy import default
+from tkinter import CASCADE
 from django.db import models
 from django.forms import CharField
 from sqlalchemy import null
@@ -106,6 +107,35 @@ class SubscriptionTransaction(models.Model):
         return nullStr(self.subscription) + " - " + nullStr(self.price)
 
 
+
+DISCOUNT_TYPE = {('discount_on_total_bill', 'Discount On Total Bill')}
+
+
+class Discounts(models.Model):
+    discountsId = models.AutoField(primary_key=True)
+    discount_type = models.CharField(max_length=50, choices=DISCOUNT_TYPE)
+    discount = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.discount
+
+
+class OrgDiscounts(models.Model):
+    orgdiscountsId = models.AutoField(primary_key=True)
+    orguser = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
+    orgdiscount_id = models.ForeignKey(Discounts, on_delete=models.CASCADE)
+    orgdiscount = models.CharField(max_length=100)    
+    orgdescription = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.discount
+
+
 class StatusChoice(Enum):
     save = "SAVE"
     submit = "SUBMIT"
@@ -168,6 +198,17 @@ class EventRegistration(models.Model):
     is_equipment = models.BooleanField(default=False)
     equipment_description = models.CharField(max_length=500, null=True)
     #subscription = models.ForeignKey(SubscriptionTransaction, on_delete=models.CASCADE)
+
+    t_and_c = models.TextField(max_length=5000)
+    facebook = models.CharField(max_length=255, blank=True, null=True)
+    twitter = models.CharField(max_length=255, blank=True, null=True)
+    youtube = models.CharField(max_length=255, blank=True, null=True)
+    pinterest = models.CharField(max_length=255, blank=True, null=True)
+    instagram = models.CharField(max_length=255, blank=True, null=True)
+    linkedin = models.CharField(max_length=255, blank=True, null=True)
+    orgdiscountsId = models.ForeignKey(OrgDiscounts, on_delete=models.CASCADE)
+    calender = models.CharField(max_length=255)
+    live = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         # call the compress function
