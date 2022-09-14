@@ -1,4 +1,5 @@
 # from dataclasses import fields
+from asyncio import events
 from rest_framework import serializers
 from .models import *
 from users.models import User
@@ -124,10 +125,47 @@ class StateSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# class AboutEventSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = AboutEvent
-#         fields = '__all__'
+class EventCompanyImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventCompanyImage
+        fields = '__all__'
+        extra_kwargs = {'id': {'read_only': True}}
+
+
+class EventCompanyVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventCompanyVideo
+        fields = '__all__'
+        extra_kwargs = {'id': {'read_only': True}}
+
+
+class EventCompanyDetailsSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+    video = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_image(obj):
+        image_id = EventCompanyImage.objects.filter(company_id=obj.id)
+        image = EventCompanyImageSerializer(image_id, many=True)
+        return image.data
+
+    @staticmethod
+    def get_video(obj):
+        video_id = EventCompanyVideo.objects.filter(company_id=obj.id)
+        video = EventCompanyVideoSerializer(video_id, many=True)
+        return video.data
+
+    class Meta:
+        model = EventCompanyDetails
+        fields = ('id', 'name', 'gst', 'contact_no', 'email', 'about', 'flat_no', 'street', 'area', 'city', 'state', 'pincode', 'image', 'video')
+        extra_kwargs = {'id': {'read_only': True}}
+
+
+class EventPersonalDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventPersonalDetails
+        fields = '__all__'
+        extra_kwargs = {'id': {'read_only': True}}
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -150,7 +188,11 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
 
 class EventRegistrationSerializer2(serializers.ModelSerializer):
     event = EventSerializer(read_only=True)
+    image = serializers.SerializerMethodField()
+    video = serializers.SerializerMethodField()
+    occasion_id = serializers.SerializerMethodField()
     #subscription = SubscriptionTransactionSerializer(read_only=True)
+
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
     end_date = serializers.DateField(
@@ -160,11 +202,29 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
 
+    @staticmethod
+    def get_image(obj):
+        image_id = EventImage.objects.filter(event_reg_id=obj.id)
+        image = EventImageSerializer(image_id, many=True)
+        return image.data
+
+    @staticmethod
+    def get_video(obj):
+        video_id = EventVideo.objects.filter(event_reg_id=obj.id)
+        video = EventVideoSerializer(video_id, many=True)
+        return video.data
+
+    @staticmethod
+    def get_occasion_id(obj):
+        occasion = CommentsAndRating.objects.filter(occasion_id=obj.id)
+        occasion_id = CommentsAndRatingSerializer(occasion, many=True)
+        return occasion_id.data
+
     class Meta:
         model = EventRegistration
         fields = ('id', 'location_type', 'occupancy_type', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
-                  'permission_letter', 'event', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description')
+                  'permission_letter', 'event', 'image', 'video', 'occasion_id', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description')
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -180,12 +240,40 @@ class EventVideoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SeatingArrangementMasterSerializer(serializers.ModelSerializer):
+    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+
+    class Meta:
+        model = SeatingArrangementMaster
+        fields = "__all__"
+
+
+class SeatingArrangementBookingSerializer(serializers.ModelSerializer):
+    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+    seat = SeatingArrangementMasterSerializer(read_only=True)
+
+    class Meta:
+        model = SeatingArrangementBooking
+        fields = "__all__"
+
+
+class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):
+    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+    #seat = SeatingArrangementBookingSerializer(read_only=True)
+    class Meta:
+        model = SeatingArrangementBooking
+        fields = "__all__"
+
+
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):
+    occasion = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     video = serializers.SerializerMethodField()
     # city = serializers.SerializerMethodField()
     # state = serializers.SerializerMethodField()
     occasion_id = serializers.SerializerMethodField()
+    companydetails = serializers.SerializerMethodField()
+    personaldetails = serializers.SerializerMethodField()
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -199,8 +287,32 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_occasion_id(obj):
         occasion = CommentsAndRating.objects.filter(occasion_id=obj.id)
+        print('occasion1', occasion)
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
+
+    @staticmethod
+    def get_occasion(obj):
+        occasion_id = SeatingArrangementBooking.objects.filter(
+            occasion_id=obj.id)
+        occasion = SeatingArrangementBookingSerializer(occasion_id, many=True)
+        return occasion.data
+
+    @staticmethod
+    def get_companydetails(obj):
+        companydetails_id = EventCompanyDetails.objects.filter(
+            event_reg=obj.id)
+        companydetails = EventCompanyDetailsSerializer(
+            companydetails_id, many=True)
+        return companydetails.data
+
+    @staticmethod
+    def get_personaldetails(obj):
+        personaldetails_id = EventPersonalDetails.objects.filter(
+            event_reg=obj.id)
+        companydetails = EventPersonalDetailsSerializer(
+            personaldetails_id, many=True)
+        return companydetails.data
 
     # @staticmethod
     # def get_city(obj):
@@ -228,7 +340,7 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventRegistration
-        fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'capacity', 'location_address',
+        fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
                   'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video')
 
@@ -663,31 +775,6 @@ class WishlistOfferSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WishlistOffer
-        fields = "__all__"
-
-
-class SeatingArrangementMasterSerializer(serializers.ModelSerializer):
-    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-
-    class Meta:
-        model = SeatingArrangementMaster
-        fields = "__all__"
-
-
-class SeatingArrangementBookingSerializer(serializers.ModelSerializer):
-    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-    seat = SeatingArrangementMasterSerializer(read_only=True)
-
-    class Meta:
-        model = SeatingArrangementBooking
-        fields = "__all__"
-
-
-class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):
-    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-    #seat = SeatingArrangementBookingSerializer(read_only=True)
-    class Meta:
-        model = SeatingArrangementBooking
         fields = "__all__"
 
 

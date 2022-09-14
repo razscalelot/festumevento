@@ -204,6 +204,25 @@ class SubscriptionMasterView(APIView):
 #                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+class Events(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id=0):
+        if id != 0:
+            events = Event.objects.filter(is_active=True, id=id)
+        else:
+            events = Event.objects.filter(is_active=True)
+
+        events = OrgEventSerializer(events, many=True)
+        data = events.data
+        return Response(
+            {
+                "events": data,
+            },
+            status=status.HTTP_200_OK
+        )
+
+
 class OrgEvents(APIView):
     permission_classes = [IsAuthenticated]
 

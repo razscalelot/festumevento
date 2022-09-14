@@ -15,7 +15,8 @@ urlpatterns = [
     path('event/register/', views.EventRegister.as_view()),
 
     # Get all events
-    path('events/', views.SetEvent.as_view()),
+    path('events/', views.Events.as_view()),
+    path('events/<int:id>', views.Events.as_view()),
 
     # Get org events 
     path('org/event/', views.OrgEvents.as_view()),
