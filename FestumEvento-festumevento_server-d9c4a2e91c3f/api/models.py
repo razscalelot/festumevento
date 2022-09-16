@@ -1,7 +1,4 @@
-from email.policy import default
-from tkinter import CASCADE
 from django.db import models
-from django.forms import CharField
 from sqlalchemy import null
 from users.models import User
 from enum import Enum
@@ -116,7 +113,7 @@ class Discounts(models.Model):
     discount_type = models.CharField(max_length=50, choices=DISCOUNT_TYPE)
     discount = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -127,9 +124,9 @@ class OrgDiscounts(models.Model):
     orgdiscountsId = models.AutoField(primary_key=True)
     orguser = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
     orgdiscount_id = models.ForeignKey(Discounts, on_delete=models.CASCADE)
-    orgdiscount = models.CharField(max_length=100)    
+    orgdiscount = models.CharField(max_length=100, null=True, blank=True)    
     orgdescription = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -206,7 +203,7 @@ class EventRegistration(models.Model):
     pinterest = models.CharField(max_length=255, blank=True, null=True)
     instagram = models.CharField(max_length=255, blank=True, null=True)
     linkedin = models.CharField(max_length=255, blank=True, null=True)
-    orgdiscountsId = models.ForeignKey(OrgDiscounts, on_delete=models.CASCADE)
+    orgdiscountsId = models.ForeignKey(OrgDiscounts, on_delete=models.CASCADE, null=True, blank=True)
     calender = models.CharField(max_length=255)
     live = models.BooleanField(default=False)
 

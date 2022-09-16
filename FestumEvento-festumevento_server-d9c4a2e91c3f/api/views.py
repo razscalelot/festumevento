@@ -209,11 +209,15 @@ class Events(APIView):
 
     def get(self, request, id=0):
         if id != 0:
-            events = Event.objects.filter(is_active=True, id=id)
+            print('if')
+            events = EventRegistration.objects.filter(is_active=True, id=id)
+            print('events', events)
         else:
-            events = Event.objects.filter(is_active=True)
+            print('else')
+            events = EventRegistration.objects.filter(is_active=True)
+            print('events', events)
 
-        events = OrgEventSerializer(events, many=True)
+        events = EventRegistrationSerializer2(events, many=True)
         data = events.data
         return Response(
             {
@@ -228,11 +232,11 @@ class OrgEvents(APIView):
 
     def get(self, request, id=0):
         if id != 0:
-            events = Event.objects.filter(is_active=True, user=request.user, id=id)
+            events = EventRegistration.objects.filter(is_active=True, event_id__user_id=request.user, id=id)
         else:
-            events = Event.objects.filter(is_active=True, user=request.user)
+            events = EventRegistration.objects.filter(is_active=True, event_id__user_id=request.user)
 
-        events = OrgEventSerializer(events, many=True)
+        events = EventRegistrationSerializer2(events, many=True)
         data = events.data
         return Response(
             {
@@ -394,6 +398,61 @@ class EventRegister(APIView):
             },
             status=status.HTTP_201_CREATED
         )
+
+
+class DiscountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id=0):
+        user = request._user.id
+        if id != 0:
+            discount = Discounts.objects.filter(discountsId=id)
+        else:
+            discount = Discounts.objects.all()
+        discount_serializer = DiscountSerializers(discount, many=True)
+        return JsonResponse({
+            'message': "Data fetch Successfully",
+            'data': discount_serializer.data,
+            'isSuccess': True
+        }, status=200)
+
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = DiscountSerializers(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            model_obj = serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                #  "error": str(verror)
+                 "error": serializer.errors
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    def put(self, request, id):
+        discount = Discounts.objects.get(discountsId=id)
+        discount_serializer = DiscountSerializers(discount, data=request.data)
+        if discount_serializer.is_valid():
+            discount_serializer.save()
+            return JsonResponse({
+                'message': "Updated Successfully",
+                'data': discount_serializer.data,
+                'isSuccess': True
+            }, status=200)
+        return JsonResponse({
+            'message': "Insertion Faild",
+            'data': discount_serializer.errors,
+            'isSuccess': False
+        }, status=200)
 
 
 class EventPriceMatrix(APIView):

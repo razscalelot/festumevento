@@ -24,6 +24,10 @@ urlpatterns = [
     path('org/event/<int:id>', views.OrgEvents.as_view()),
     path('org/event/delete/<int:id>', views.OrgEvents.as_view()),
 
+
+    path('discount', views.DiscountView.as_view(), name="DiscountView"),
+    path('discount/<int:id>', views.DiscountView.as_view(), name="DiscountView"),
+
     # path('event/<int:id>', views.Events.as_view()),
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),

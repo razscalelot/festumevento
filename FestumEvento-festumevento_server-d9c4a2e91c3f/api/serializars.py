@@ -157,7 +157,8 @@ class EventCompanyDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventCompanyDetails
-        fields = ('id', 'name', 'gst', 'contact_no', 'email', 'about', 'flat_no', 'street', 'area', 'city', 'state', 'pincode', 'image', 'video')
+        fields = ('id', 'name', 'gst', 'contact_no', 'email', 'about', 'flat_no',
+                  'street', 'area', 'city', 'state', 'pincode', 'image', 'video')
         extra_kwargs = {'id': {'read_only': True}}
 
 
@@ -177,6 +178,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
+    event = EventSerializer(read_only=True)
 
     class Meta:
         model = EventRegistration
@@ -188,10 +190,14 @@ class EventRegistrationSerializer(serializers.ModelSerializer):
 
 class EventRegistrationSerializer2(serializers.ModelSerializer):
     event = EventSerializer(read_only=True)
+    occasion = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     video = serializers.SerializerMethodField()
+    # city = serializers.SerializerMethodField()
+    # state = serializers.SerializerMethodField()
     occasion_id = serializers.SerializerMethodField()
-    #subscription = SubscriptionTransactionSerializer(read_only=True)
+    companydetails = serializers.SerializerMethodField()
+    personaldetails = serializers.SerializerMethodField()
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -201,6 +207,48 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         allow_null=True, read_only=True, format='%I:%M %p')
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
+
+    @staticmethod
+    def get_occasion_id(obj):
+        occasion = CommentsAndRating.objects.filter(occasion_id=obj.id)
+        print('occasion1', occasion)
+        occasion_id = CommentsAndRatingSerializer(occasion, many=True)
+        return occasion_id.data
+
+    @staticmethod
+    def get_occasion(obj):
+        occasion_id = SeatingArrangementBooking.objects.filter(
+            occasion_id=obj.id)
+        occasion = SeatingArrangementBookingSerializer(occasion_id, many=True)
+        return occasion.data
+
+    @staticmethod
+    def get_companydetails(obj):
+        companydetails_id = EventCompanyDetails.objects.filter(
+            event_reg=obj.id)
+        companydetails = EventCompanyDetailsSerializer(
+            companydetails_id, many=True)
+        return companydetails.data
+
+    @staticmethod
+    def get_personaldetails(obj):
+        personaldetails_id = EventPersonalDetails.objects.filter(
+            event_reg=obj.id)
+        companydetails = EventPersonalDetailsSerializer(
+            personaldetails_id, many=True)
+        return companydetails.data
+
+    # @staticmethod
+    # def get_city(obj):
+    #     city_id = City.objects.filter(id=obj.city)
+    #     city = CitySerializer(city_id, many=True)
+    #     return city.data
+
+    # @staticmethod
+    # def get_state(obj):
+    #     state_id = State.objects.filter(id=obj.state)
+    #     state = StateSerializer(state_id, many=True)
+    #     return state.data
 
     @staticmethod
     def get_image(obj):
@@ -214,17 +262,12 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         video = EventVideoSerializer(video_id, many=True)
         return video.data
 
-    @staticmethod
-    def get_occasion_id(obj):
-        occasion = CommentsAndRating.objects.filter(occasion_id=obj.id)
-        occasion_id = CommentsAndRatingSerializer(occasion, many=True)
-        return occasion_id.data
-
     class Meta:
         model = EventRegistration
-        fields = ('id', 'location_type', 'occupancy_type', 'capacity', 'location_address',
-                  'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
-                  'permission_letter', 'event', 'image', 'video', 'occasion_id', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description')
+        fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
+                  'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking', 'event',
+                  'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
+
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -263,6 +306,12 @@ class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):
     class Meta:
         model = SeatingArrangementBooking
         fields = "__all__"
+
+
+class DiscountSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Discounts
+        fields = '__all__'
 
 
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):
@@ -342,7 +391,7 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
         model = EventRegistration
         fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
-                  'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video')
+                  'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
 
 
 class OrgEventSerializer(serializers.ModelSerializer):
