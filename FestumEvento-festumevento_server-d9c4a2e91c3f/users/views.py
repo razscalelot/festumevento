@@ -100,7 +100,6 @@ class UserCreate(APIView):
 
         if status:
             user = serializer.save()
-            print('user', user.id)
             c_user = models.User.objects.filter(id=user.id)
             api.views.set_Free_Subscription(user)
             if user:

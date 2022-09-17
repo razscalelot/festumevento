@@ -28,6 +28,9 @@ urlpatterns = [
     path('discount', views.DiscountView.as_view(), name="DiscountView"),
     path('discount/<int:id>', views.DiscountView.as_view(), name="DiscountView"),
 
+    path('org/discount', views.OrgDiscountView.as_view(), name="DiscountView"),
+    path('org/discount/<int:id>', views.OrgDiscountView.as_view(), name="DiscountView"),
+
     # path('event/<int:id>', views.Events.as_view()),
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),

@@ -198,6 +198,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     occasion_id = serializers.SerializerMethodField()
     companydetails = serializers.SerializerMethodField()
     personaldetails = serializers.SerializerMethodField()
+    discount_id = serializers.SerializerMethodField()
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -214,6 +215,13 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         print('occasion1', occasion)
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
+
+    
+    @staticmethod
+    def get_discount_id(obj):
+        discount = OrgDiscounts.objects.filter(orgdiscountsId=obj.orgdiscountsId_id)
+        discount_id = OrgDiscountSerializers(discount, many=True)
+        return discount_id.data
 
     @staticmethod
     def get_occasion(obj):
@@ -264,10 +272,9 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
 
     class Meta:
         model = EventRegistration
-        fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
+        fields = ('id', 'location_type', 'occupancy_type', 'discount_id', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking', 'event',
                   'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
-
 
 
 class EventImageSerializer(serializers.ModelSerializer):
@@ -314,6 +321,12 @@ class DiscountSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class OrgDiscountSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = OrgDiscounts
+        fields = '__all__'
+
+
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):
     occasion = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
@@ -323,6 +336,7 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
     occasion_id = serializers.SerializerMethodField()
     companydetails = serializers.SerializerMethodField()
     personaldetails = serializers.SerializerMethodField()
+    discount_id = serializers.SerializerMethodField()
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -339,6 +353,12 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
         print('occasion1', occasion)
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
+
+    @staticmethod
+    def get_discount_id(obj):
+        discount = OrgDiscounts.objects.filter(orgdiscountsId=obj.id)
+        discount_id = OrgDiscountSerializers(discount, many=True)
+        return discount_id.data
 
     @staticmethod
     def get_occasion(obj):
@@ -389,7 +409,7 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventRegistration
-        fields = ('id', 'location_type', 'occupancy_type', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
+        fields = ('id', 'location_type', 'occupancy_type', 'discount_id', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
                   'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
 

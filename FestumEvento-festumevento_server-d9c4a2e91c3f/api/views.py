@@ -209,13 +209,9 @@ class Events(APIView):
 
     def get(self, request, id=0):
         if id != 0:
-            print('if')
             events = EventRegistration.objects.filter(is_active=True, id=id)
-            print('events', events)
         else:
-            print('else')
             events = EventRegistration.objects.filter(is_active=True)
-            print('events', events)
 
         events = EventRegistrationSerializer2(events, many=True)
         data = events.data
@@ -232,9 +228,11 @@ class OrgEvents(APIView):
 
     def get(self, request, id=0):
         if id != 0:
-            events = EventRegistration.objects.filter(is_active=True, event_id__user_id=request.user, id=id)
+            events = EventRegistration.objects.filter(
+                is_active=True, event_id__user_id=request.user, id=id)
         else:
-            events = EventRegistration.objects.filter(is_active=True, event_id__user_id=request.user)
+            events = EventRegistration.objects.filter(
+                is_active=True, event_id__user_id=request.user)
 
         events = EventRegistrationSerializer2(events, many=True)
         data = events.data
@@ -259,13 +257,12 @@ class OrgEvents(APIView):
     def post(self, request):
         if not request.POST._mutable:
             request.POST._mutable = True
-        request.data["user"] = request._user.id        
+        request.data["user"] = request._user.id
         serializer = EventSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print("new")       
+        print("new")
         return Response({"status": True}, status=status.HTTP_201_CREATED)
-        
 
     def put(self, request, id):
         event = Event.objects.get(id=id)
@@ -381,7 +378,7 @@ class EventRegister(APIView):
         else:
             return Response(
                 {"status": vstatus,
-                #  "error": str(verror)
+                 #  "error": str(verror)
                  "error": serializer.errors
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -416,7 +413,6 @@ class DiscountView(APIView):
             'isSuccess': True
         }, status=200)
 
-
     def post(self, request):
         vstatus = False
         verror = None
@@ -433,14 +429,50 @@ class DiscountView(APIView):
         else:
             return Response(
                 {"status": vstatus,
-                #  "error": str(verror)
+                 #  "error": str(verror)
                  "error": serializer.errors
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
-
 
     def put(self, request, id):
         discount = Discounts.objects.get(discountsId=id)
         discount_serializer = DiscountSerializers(discount, data=request.data)
+        if discount_serializer.is_valid():
+            discount_serializer.save()
+            return JsonResponse({
+                'message': "Updated Successfully",
+                'data': discount_serializer.data,
+                'isSuccess': True
+            }, status=200)
+        return JsonResponse({
+            'message': "Insertion Faild",
+            'data': discount_serializer.errors,
+            'isSuccess': False
+        }, status=200)
+
+
+class OrgDiscountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, id=0):
+        user = request._user.id
+        if id != 0:
+            discount = OrgDiscounts.objects.filter(
+                orgdiscountsId=id, orguser_id=user)
+        else:
+            discount = OrgDiscounts.objects.all()
+        discount_serializer = OrgDiscountSerializers(discount, many=True)
+        return JsonResponse({
+            'message': "Data fetch Successfully",
+            'data': discount_serializer.data,
+            'isSuccess': True
+        }, status=200)
+
+    def put(self, request, id):
+        user = request._user.id
+        discount = Discounts.objects.get(discountsId=id)
+        request.data['orgdiscount_id'] = discount.discountsId
+        request.data['orguser'] = user
+        discount_serializer = OrgDiscountSerializers(data=request.data)
         if discount_serializer.is_valid():
             discount_serializer.save()
             return JsonResponse({
