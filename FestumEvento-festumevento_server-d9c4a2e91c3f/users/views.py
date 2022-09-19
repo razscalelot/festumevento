@@ -71,7 +71,8 @@ class GetUser(APIView):
         }, status=httpStatus.HTTP_201_CREATED)
 
     def post(self, request, format=None):
-        serializer = UserUpdateProfileSerializer(data=request.data, context={'user': request.user})
+        serializer = UserUpdateProfileSerializer(
+            data=request.data, context={'user': request.user})
         if serializer.is_valid(raise_exception=True):
             return Response({'status': True, 'msg': "Your profile is updated Successfully."},
                             status=httpStatus.HTTP_200_OK)
@@ -89,44 +90,50 @@ class UserCreate(APIView):
             request.data["refer_code"] = ""
         if request.data.get("fcm_token") is None:
             request.data["fcm_token"] = ""
-        print('request.data', request.data['confirm_password'])
-        serializer = UserSerializer(data=request.data)
-        status = False
-        verror = None
-        try:
-            status = serializer.is_valid(raise_exception=True)
-        except Exception as error:
-            verror = error
+        existing = models.User.objects.filter(mobile=request.data["mobile"])
+        if existing.exists():
+            serializer = UserSerializer(data=request.data)
+            status = False
+            verror = None
+            try:
+                status = serializer.is_valid(raise_exception=True)
+            except Exception as error:
+                verror = error
 
-        if status:
-            user = serializer.save()
-            c_user = models.User.objects.filter(id=user.id)
-            api.views.set_Free_Subscription(user)
-            if user:
-                cc_user = c_user[0]
-                if len(cc_user.refer_code) >= 6:
-                    coin = 10
-                    try:
-                        refer_user = models.User.objects.filter(
-                            my_refer_code=cc_user.refer_code
-                        )
-                        if refer_user.count() > 0:
-                            refer_user = refer_user[0]
-                            api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
-                                               "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
-                                               "", "")
-                            if cc_user.role == "Organiser":
-                                coin = 20
-                            api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
-                                               "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
-                                               "", "")
-                    except models.User.DoesNotExist:
-                        coin = 0
-                c_user.update(verify=True)
-                return Response({
-                    "status": status,
-                    "data": serializer.data
-                }, status=httpStatus.HTTP_201_CREATED)
+            if status:
+                user = serializer.save()
+                c_user = models.User.objects.filter(id=user.id)
+                api.views.set_Free_Subscription(user)
+                if user:
+                    cc_user = c_user[0]
+                    if len(cc_user.refer_code) >= 6:
+                        coin = 10
+                        try:
+                            refer_user = models.User.objects.filter(
+                                my_refer_code=cc_user.refer_code
+                            )
+                            if refer_user.count() > 0:
+                                refer_user = refer_user[0]
+                                api.views.tranCoin(cc_user, coin, refer_user, cc_user, "LOGIN_REFER", "CREDIT", "", "",
+                                                   "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
+                                                   "", "")
+                                if cc_user.role == "Organiser":
+                                    coin = 20
+                                api.views.tranCoin(refer_user, coin, refer_user, cc_user, "REFERED", "CREDIT", "", "",
+                                                   "User " + cc_user.name + " refer by " + refer_user.name + " as " + cc_user.role,
+                                                   "", "")
+                        except models.User.DoesNotExist:
+                            coin = 0
+                    c_user.update(verify=True)
+                    return Response({
+                        "status": status,
+                        "data": serializer.data
+                    }, status=httpStatus.HTTP_201_CREATED)
+            else:
+                return Response(
+                    {"status": status,
+                     "error": verror.detail
+                     }, status=httpStatus.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response(
                 {"status": status,
@@ -172,9 +179,12 @@ class SendOtp(APIView):
         mobile_number = request.data.get("mobile")
         if mobile_number:
             mobile = models.User.objects.filter(mobile=str(mobile_number))
+            print('mobile', mobile)
             if not mobile.exists():
+                print('mobile_number', mobile_number)
                 otp = generateOTP()
-                otpRes = send_otp_request(mobile, otp)
+                otpRes = send_otp_request(str(mobile_number))
+                print('otpRes', otpRes)
                 if otpRes["Status"] != "Error":
                     models.OtpLog.objects.create(
                         mobile=mobile,
@@ -200,7 +210,7 @@ class SendOtp(APIView):
                 return Response(
                     {
                         "status": False,
-                        'error': "Please enter valide phone number"
+                        'error': "user with this mobile already exists."
                     },
                     status=httpStatus.HTTP_400_BAD_REQUEST
                 )
@@ -314,9 +324,8 @@ def generateOTP():
     return OTP
 
 
-def send_otp_request(mobile, otp):
-    url = "http://2factor.in/API/V1/8f1dd888-03a5-11ea-9fa5-0200cd936042/SMS/" + \
-          mobile + "/" + otp
+def send_otp_request(mobile):
+    url = "http://2factor.in/API/V1/8f1dd888-03a5-11ea-9fa5-0200cd936042/SMS/" + mobile + "/AUTOGEN"
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("GET", url, data=payload, headers=headers)

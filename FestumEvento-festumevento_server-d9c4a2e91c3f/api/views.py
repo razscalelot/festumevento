@@ -231,8 +231,13 @@ class OrgEvents(APIView):
             events = EventRegistration.objects.filter(
                 is_active=True, event_id__user_id=request.user, id=id)
         else:
-            events = EventRegistration.objects.filter(
-                is_active=True, event_id__user_id=request.user)
+            serializer = Event.objects.filter(is_active=True)
+            for data in serializer:
+                print('data', data)
+                id = int(data["id"])
+                print('id', id)
+                events = EventRegistration.objects.filter(
+                    is_active=True, event_id__user_id=request.user, event_id=id)
 
         events = EventRegistrationSerializer2(events, many=True)
         data = events.data
@@ -257,6 +262,7 @@ class OrgEvents(APIView):
     def post(self, request):
         if not request.POST._mutable:
             request.POST._mutable = True
+        request.data['is_active'] = True
         request.data["user"] = request._user.id
         serializer = EventSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -615,8 +621,11 @@ class OfferDiscountView(APIView):
 
 class ShopCategoryView(APIView):
 
-    def get(self, request):
-        category = ShopCategory.objects.filter(is_active=True)
+    def get(self, request, id=0):
+        if id != 0:
+            category = ShopCategory.objects.filter(id=id, is_active=True)
+        else:
+            category = ShopCategory.objects.filter(is_active=True)
         categorySerializer = ShopCategorySerializer(category, many=True)
         return Response({
             'detail': categorySerializer.data

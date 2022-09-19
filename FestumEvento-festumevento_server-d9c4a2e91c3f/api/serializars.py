@@ -170,7 +170,7 @@ class EventPersonalDetailsSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-
+     
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
@@ -193,8 +193,6 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     occasion = serializers.SerializerMethodField()
     image = serializers.SerializerMethodField()
     video = serializers.SerializerMethodField()
-    # city = serializers.SerializerMethodField()
-    # state = serializers.SerializerMethodField()
     occasion_id = serializers.SerializerMethodField()
     companydetails = serializers.SerializerMethodField()
     personaldetails = serializers.SerializerMethodField()
@@ -209,10 +207,11 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
 
+    print('event', event)
+
     @staticmethod
     def get_occasion_id(obj):
         occasion = CommentsAndRating.objects.filter(occasion_id=obj.id)
-        print('occasion1', occasion)
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
 
@@ -245,18 +244,6 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         companydetails = EventPersonalDetailsSerializer(
             personaldetails_id, many=True)
         return companydetails.data
-
-    # @staticmethod
-    # def get_city(obj):
-    #     city_id = City.objects.filter(id=obj.city)
-    #     city = CitySerializer(city_id, many=True)
-    #     return city.data
-
-    # @staticmethod
-    # def get_state(obj):
-    #     state_id = State.objects.filter(id=obj.state)
-    #     state = StateSerializer(state_id, many=True)
-    #     return state.data
 
     @staticmethod
     def get_image(obj):

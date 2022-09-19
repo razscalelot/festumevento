@@ -42,6 +42,7 @@ urlpatterns = [
     path('event/localoffer/video/', views.LocalOfferVideos.as_view()),
     path('shop',views.ShopView.as_view()),
     path('shop-category', views.ShopCategoryView.as_view()), 
+    path('shop-category/<int:id>', views.ShopCategoryView.as_view()), 
     path('event/scan',views.ValidateScan.as_view()),
     path('event/checkin',views.CheckInView.as_view()),
     path('event/checklist',views.CheckInView.as_view()),
