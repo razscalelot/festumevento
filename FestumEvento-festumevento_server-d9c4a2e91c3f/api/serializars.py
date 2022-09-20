@@ -207,7 +207,6 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
 
-    print('event', event)
 
     @staticmethod
     def get_occasion_id(obj):

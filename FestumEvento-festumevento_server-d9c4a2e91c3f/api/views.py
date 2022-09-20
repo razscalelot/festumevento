@@ -181,29 +181,6 @@ class SubscriptionMasterView(APIView):
         return Response({"delete": True, "message": "Deleted Successfully."}, status=status.HTTP_200_OK)
 
 
-# class AboutEvent(APIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def post(self, request):
-#         vstatus = False
-#         verror = None
-#         serializer = AboutEventSerializer(data=request.data)
-
-#         try:
-#             vstatus = serializer.is_valid(raise_exception=True)
-#         except Exception as error:
-#             verror = error
-
-#         if vstatus:
-#             model_obj = serializer.save()
-#             return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(
-#                 {"status": vstatus,
-#                  "error": str(verror)
-#                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
-
-
 class Events(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -215,9 +192,33 @@ class Events(APIView):
 
         events = EventRegistrationSerializer2(events, many=True)
         data = events.data
+        for event in data:
+            id = int(event["id"])
+            invo = Invoice.objects.filter(event_reg=id)
+            if(invo.count() >= 1):
+                event["invoice_status"] = invo[0].status
+            else:
+                event["invoice_status"] = ""
+
+        shops = Shop.objects.filter(
+            user=request.user,
+            is_active=True
+        )
+
+        shopSerializer = ShopSerializer(shops, many=True)
+        shopSerializerData = shopSerializer.data
+
+        for shop in shopSerializerData:
+            local = LocalOffer.objects.filter(
+                is_active=True,
+                shop=shop["id"]
+            )
+            offerSer = LocalOfferSerializer2(local, many=True)
+            shop["offers"] = offerSer.data
         return Response(
             {
                 "events": data,
+                "local": shopSerializerData
             },
             status=status.HTTP_200_OK
         )
@@ -231,19 +232,38 @@ class OrgEvents(APIView):
             events = EventRegistration.objects.filter(
                 is_active=True, event_id__user_id=request.user, id=id)
         else:
-            serializer = Event.objects.filter(is_active=True)
-            for data in serializer:
-                print('data', data)
-                id = int(data["id"])
-                print('id', id)
-                events = EventRegistration.objects.filter(
-                    is_active=True, event_id__user_id=request.user, event_id=id)
+            events = EventRegistration.objects.filter(
+                is_active=True, event_id__user_id=request.user)
 
         events = EventRegistrationSerializer2(events, many=True)
         data = events.data
+        for event in data:
+            id = int(event["id"])
+            invo = Invoice.objects.filter(event_reg=id)
+            if(invo.count() >= 1):
+                event["invoice_status"] = invo[0].status
+            else:
+                event["invoice_status"] = ""
+
+        shops = Shop.objects.filter(
+            user=request.user,
+            is_active=True
+        )
+
+        shopSerializer = ShopSerializer(shops, many=True)
+        shopSerializerData = shopSerializer.data
+
+        for shop in shopSerializerData:
+            local = LocalOffer.objects.filter(
+                is_active=True,
+                shop=shop["id"]
+            )
+            offerSer = LocalOfferSerializer2(local, many=True)
+            shop["offers"] = offerSer.data
         return Response(
             {
                 "events": data,
+                "local": shopSerializerData
             },
             status=status.HTTP_200_OK
         )
@@ -324,7 +344,6 @@ class SetEvent(APIView):
     def get(self, request):
         sub = EventRegistration.objects.filter(
             is_active=True)
-        print('sub', sub)
         serializer = EventRegistrationSerializer2(sub, many=True)
         data = serializer.data
         for event in data:

@@ -90,13 +90,23 @@ class UserCreate(APIView):
             request.data["refer_code"] = ""
         if request.data.get("fcm_token") is None:
             request.data["fcm_token"] = ""
+
         existing = models.User.objects.filter(mobile=request.data["mobile"])
-        if existing.exists():
+        if not existing.exists():
+            verify_phone = models.OtpLog.objects.filter(mobile=request.data["mobile"], is_verify=True)
+            if not verify_phone:
+                print('verify_phone', verify_phone)
+                return Response(
+                    {"status": False,
+                     "error": "Mobile number is not verified."
+                     }, status=httpStatus.HTTP_406_NOT_ACCEPTABLE)
+
             serializer = UserSerializer(data=request.data)
             status = False
             verror = None
             try:
                 status = serializer.is_valid(raise_exception=True)
+                print('status', status)
             except Exception as error:
                 verror = error
 
@@ -136,8 +146,8 @@ class UserCreate(APIView):
                      }, status=httpStatus.HTTP_406_NOT_ACCEPTABLE)
         else:
             return Response(
-                {"status": status,
-                 "error": verror.detail
+                {"status": False,
+                 "error": "user with this mobile already exists."
                  }, status=httpStatus.HTTP_406_NOT_ACCEPTABLE)
 
 
@@ -181,13 +191,11 @@ class SendOtp(APIView):
             mobile = models.User.objects.filter(mobile=str(mobile_number))
             print('mobile', mobile)
             if not mobile.exists():
-                print('mobile_number', mobile_number)
                 otp = generateOTP()
-                otpRes = send_otp_request(str(mobile_number))
-                print('otpRes', otpRes)
+                otpRes = send_otp_request(str(mobile_number), otp)
                 if otpRes["Status"] != "Error":
                     models.OtpLog.objects.create(
-                        mobile=mobile,
+                        mobile=str(mobile_number),
                         otp=otp,
                         smsKey=otpRes["Details"]
                     )
@@ -227,28 +235,20 @@ class SendOtp(APIView):
 class VerifyOtp(APIView):
     def post(self, request, format='json'):
         otp = request.data.get("otp")
-
-        if otp:
-            otp_log = models.OtpLog.objects.filter(otp=otp)
-            if otp_log.exists():
-                return Response(
-                    {
-                        "status": True,
-                    }
-                )
-            else:
-                return Response(
-                    {
-                        "status": False,
-                        "detail": "You are not register with us"
-                    },
-                    status=httpStatus.HTTP_400_BAD_REQUEST
-                )
-        else:
+        try:
+            otp_log = models.OtpLog.objects.get(otp=otp)
+            otp_log.is_verify = True
+            otp_log.save()
+            return Response(
+                {
+                    "status": True,
+                }
+            )
+        except models.OtpLog.DoesNotExist:
             return Response(
                 {
                     "status": False,
-                    'detail': "Invalid mobile otp"
+                    "detail": "Invalid mobile otp"
                 },
                 status=httpStatus.HTTP_400_BAD_REQUEST
             )
@@ -324,8 +324,9 @@ def generateOTP():
     return OTP
 
 
-def send_otp_request(mobile):
-    url = "http://2factor.in/API/V1/8f1dd888-03a5-11ea-9fa5-0200cd936042/SMS/" + mobile + "/AUTOGEN"
+def send_otp_request(mobile, otp):
+    url = "http://2factor.in/API/V1/8f1dd888-03a5-11ea-9fa5-0200cd936042/SMS/" + \
+        mobile + "/" + otp
     payload = ""
     headers = {'content-type': 'application/x-www-form-urlencoded'}
     response = requests.request("GET", url, data=payload, headers=headers)

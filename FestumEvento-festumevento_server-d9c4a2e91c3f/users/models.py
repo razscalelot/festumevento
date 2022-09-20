@@ -142,4 +142,5 @@ class OtpLog(models.Model):
     mobile = models.CharField(max_length=10)
     otp = models.CharField(max_length=10, null=True, blank=True)
     smsKey = models.CharField(max_length=500)
+    is_verify = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
