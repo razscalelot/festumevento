@@ -105,7 +105,11 @@ class SubscriptionTransaction(models.Model):
 
 
 
-DISCOUNT_TYPE = {('discount_on_total_bill', 'Discount On Total Bill')}
+
+DISCOUNT_TYPE = {('discount_on_total_bill', 'Discount On Total Bill'),
+                 ('discount_on_equipment_or_item', 'Discount On Equipment Or Item'),
+                 ('advance_and_discount_confirmation', 'Advance And Discount Confirmation')
+                 }
 
 
 class Discounts(models.Model):
@@ -130,7 +134,20 @@ class OrgDiscounts(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.discount
+        return str(self.orgdiscount_id)
+
+
+class OrgEquipment(models.Model):
+    orgequipmentId = models.AutoField(primary_key=True)
+    orgequipmentdiscounts_id = models.ForeignKey(OrgDiscounts, related_name='orgequipmentdiscounts_id', on_delete=models.CASCADE)
+    orgequipment_id = models.ForeignKey('SeatingArrangementBooking', related_name='orgequipment_id', on_delete=models.CASCADE)
+    orgequipmentdiscounts = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.orgequipmentdiscounts
+
 
 
 class StatusChoice(Enum):
@@ -174,7 +191,7 @@ class EventRegistration(models.Model):
     latitude = models.DecimalField(max_digits=22, decimal_places=16, null=True)
 
     permission_letter = models.FileField(
-        upload_to='media/file/permission_letter')
+        upload_to='media/file/permission_letter', null=True, blank=True)
     accept_booking = models.BooleanField(default=False)
 
     location_type = models.CharField(max_length=100)
@@ -182,7 +199,7 @@ class EventRegistration(models.Model):
 
     capacity = models.IntegerField()
 
-    poster = models.ImageField(upload_to='media/image/poster')
+    poster = models.FileField(upload_to='media/image/poster', null=True, blank=True)
     status = models.CharField(max_length=100, choices=[(
         tag.value, tag) for tag in StatusChoice.all()])
     is_verify = models.BooleanField(default=False)
@@ -207,13 +224,13 @@ class EventRegistration(models.Model):
     calender = models.CharField(max_length=255)
     live = models.BooleanField(default=False)
 
-    def save(self, *args, **kwargs):
-        # call the compress function
-        new_image = compress(self.poster)
-        # set self.image to new_image
-        self.poster = new_image
-        # save
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     # call the compress function
+    #     new_image = compress(self.poster)
+    #     # set self.image to new_image
+    #     self.poster = new_image
+    #     # save
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return nullStr(self.event)
@@ -300,7 +317,7 @@ class EventCompanyImage(models.Model):
 class EventCompanyVideo(models.Model):
     company_id = models.ForeignKey(
         EventCompanyDetails, related_name='video', on_delete=models.CASCADE)
-    video = models.ImageField(
+    video = models.FileField(
         upload_to='image/events/company/video', blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 

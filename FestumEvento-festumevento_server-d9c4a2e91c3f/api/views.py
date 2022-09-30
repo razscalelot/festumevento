@@ -1,4 +1,5 @@
 
+from multiprocessing import context
 import api.FCMmanager as fcm
 from django.core.mail import send_mail
 # from twilio.rest import Client
@@ -181,91 +182,25 @@ class SubscriptionMasterView(APIView):
         return Response({"delete": True, "message": "Deleted Successfully."}, status=status.HTTP_200_OK)
 
 
-class Events(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, id=0):
-        if id != 0:
-            events = EventRegistration.objects.filter(is_active=True, id=id)
-        else:
-            events = EventRegistration.objects.filter(is_active=True)
-
-        events = EventRegistrationSerializer2(events, many=True)
-        data = events.data
-        for event in data:
-            id = int(event["id"])
-            invo = Invoice.objects.filter(event_reg=id)
-            if(invo.count() >= 1):
-                event["invoice_status"] = invo[0].status
-            else:
-                event["invoice_status"] = ""
-
-        shops = Shop.objects.filter(
-            user=request.user,
-            is_active=True
-        )
-
-        shopSerializer = ShopSerializer(shops, many=True)
-        shopSerializerData = shopSerializer.data
-
-        for shop in shopSerializerData:
-            local = LocalOffer.objects.filter(
-                is_active=True,
-                shop=shop["id"]
-            )
-            offerSer = LocalOfferSerializer2(local, many=True)
-            shop["offers"] = offerSer.data
-        return Response(
-            {
-                "events": data,
-                "local": shopSerializerData
-            },
-            status=status.HTTP_200_OK
-        )
-
-
 class OrgEvents(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id=0):
         if id != 0:
-            events = EventRegistration.objects.filter(
-                is_active=True, event_id__user_id=request.user, id=id)
+            event = Event.objects.filter(
+                is_active=True, user=request.user, id=id)
         else:
-            events = EventRegistration.objects.filter(
-                is_active=True, event_id__user_id=request.user)
+            event = Event.objects.filter(
+                is_active=True, user=request.user)
 
-        events = EventRegistrationSerializer2(events, many=True)
-        data = events.data
-        for event in data:
-            id = int(event["id"])
-            invo = Invoice.objects.filter(event_reg=id)
-            if(invo.count() >= 1):
-                event["invoice_status"] = invo[0].status
-            else:
-                event["invoice_status"] = ""
+        serializer = EventSerializer(event, many=True)
 
-        shops = Shop.objects.filter(
-            user=request.user,
-            is_active=True
-        )
-
-        shopSerializer = ShopSerializer(shops, many=True)
-        shopSerializerData = shopSerializer.data
-
-        for shop in shopSerializerData:
-            local = LocalOffer.objects.filter(
-                is_active=True,
-                shop=shop["id"]
-            )
-            offerSer = LocalOfferSerializer2(local, many=True)
-            shop["offers"] = offerSer.data
         return Response(
             {
-                "events": data,
-                "local": shopSerializerData
+                "events": serializer.data,
+
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_201_CREATED
         )
 
     def delete(self, request, id):
@@ -341,13 +276,31 @@ class SetEvent(APIView):
                  "error": str(verror)
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
-    def get(self, request):
-        sub = EventRegistration.objects.filter(
-            is_active=True)
+    def get(self, request, id=0):
+        if id != 0:
+            sub = EventRegistration.objects.filter(
+                is_active=True, event__user=request.user, id=id).order_by('start_date')
+        else:
+            sub = EventRegistration.objects.filter(
+                is_active=True,
+                event__user=request.user
+            ).order_by('start_date')
+
         serializer = EventRegistrationSerializer2(sub, many=True)
         data = serializer.data
         for event in data:
             id = int(event["id"])
+            ratings = CommentsAndRating.objects.filter(
+                occasion=id,
+                is_active=True
+            ).order_by('-timestamp')[:1]
+            ratings = CommentsAndRatingSerializer(ratings, many=True).data
+            if len(ratings) > 0:
+                event["rating"] = ratings[0]['avg_rating']
+                event["user_rating"] = ratings[0]['avg_user_rating']
+            else:
+                event["rating"] = 0.0
+                event["user_rating"] = 0.0
             invo = Invoice.objects.filter(event_reg=id)
             if(invo.count() >= 1):
                 event["invoice_status"] = invo[0].status
@@ -368,11 +321,24 @@ class SetEvent(APIView):
                 shop=shop["id"]
             )
             offerSer = LocalOfferSerializer2(local, many=True)
-            shop["offers"] = offerSer.data
+            offerData = offerSer.data
+            for offer in offerData:
+                ratings = CommentsAndRating.objects.filter(
+                    offer=offer["id"],
+                    is_active=True
+                ).order_by('-timestamp')[:1]
+                ratings = CommentsAndRatingSerializer(ratings, many=True).data
+                if len(ratings) > 0:
+                    offer["rating"] = ratings[0]['avg_rating']
+                    offer["user_rating"] = ratings[0]['avg_user_rating']
+                else:
+                    offer["rating"] = 0.0
+                    offer["user_rating"] = 0.0
+            shop["offers"] = offerData
 
         return Response(
             {
-                "event": data,
+                "events": data,
                 "local": shopSerializerData
 
             },
@@ -386,6 +352,7 @@ class EventRegister(APIView):
     def post(self, request):
         vstatus = False
         verror = None
+        print('request.data', request.data)
         serializer = EventRegistrationSerializer(data=request.data)
 
         try:
@@ -492,12 +459,44 @@ class OrgDiscountView(APIView):
             'isSuccess': True
         }, status=200)
 
+    def post(self, request):
+        vstatus = False
+        verror = None
+        _id = request.data['orgequipmentdiscounts_id']
+        exist = OrgEquipment.objects.get(orgequipmentdiscounts_id=_id)
+        if exist:
+            serializer = OrgEquipmentSerializers(exist, data=request.data)
+        else:
+            serializer = OrgEquipmentSerializers(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            model_obj = serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 #  "error": str(verror)
+                 "error": serializer.errors
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
     def put(self, request, id):
         user = request._user.id
         discount = Discounts.objects.get(discountsId=id)
+        odiscount = OrgDiscounts.objects.get(
+            orgdiscount_id=discount.discountsId)
         request.data['orgdiscount_id'] = discount.discountsId
         request.data['orguser'] = user
-        discount_serializer = OrgDiscountSerializers(data=request.data)
+        if odiscount:
+            discount_serializer = OrgDiscountSerializers(
+                odiscount, data=request.data)
+        else:
+            discount_serializer = OrgDiscountSerializers(data=request.data)
+
         if discount_serializer.is_valid():
             discount_serializer.save()
             return JsonResponse({
@@ -510,6 +509,142 @@ class OrgDiscountView(APIView):
             'data': discount_serializer.errors,
             'isSuccess': False
         }, status=200)
+
+
+class EventCompanyDetailsView(APIView):
+
+    def get(self, request):
+        print('request.data', request.GET.get('event_reg', 0))
+        companydetail = EventCompanyDetails.objects.filter(
+            event_reg=request.GET.get('event_reg', 0))
+        serializer = EventCompanyDetailsSerializer(companydetail, many=True)
+        return JsonResponse({
+            'message': "Data fetch Successfully",
+            'data': serializer.data,
+            'isSuccess': True
+        }, status=200)
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = EventCompanyDetailsSerializer(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 "error": str(verror)
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class EventCompanyImageView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = EventCompanyImageSerializer(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 "error": str(verror)
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    def delete(self, request):
+
+        images = EventCompanyImage.objects.get(
+            id=str(request.GET.get('id', 0))
+        )
+
+        images.image.delete()
+        images.delete()
+
+        return Response(
+            {
+                "detail": True,
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
+class EventCompanyVideoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = EventCompanyVideoSerializer(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 "error": str(verror)
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+                 
+
+    def delete(self, request):
+
+        videos = EventCompanyVideo.objects.get(
+            id=str(request.GET.get('id', 0))
+        )
+
+        videos.video.delete()
+        videos.delete()
+
+        return Response(
+            {
+                "detail": True,
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
+class EventPersonalDetailsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        vstatus = False
+        verror = None
+        serializer = EventPersonalDetailsSerializer(data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 "error": str(verror)
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 class EventPriceMatrix(APIView):
@@ -688,6 +823,22 @@ class EventImages(APIView):
             status=status.HTTP_201_CREATED
         )
 
+    def delete(self, request):
+
+        images = EventImage.objects.get(
+            id=str(request.GET.get('id', 0))
+        )
+
+        images.image.delete()
+        images.delete()
+
+        return Response(
+            {
+                "detail": True,
+            },
+            status=status.HTTP_201_CREATED
+        )
+
 
 class EventVideos(APIView):
     permission_classes = [IsAuthenticated]
@@ -713,15 +864,31 @@ class EventVideos(APIView):
 
     def get(self, request):
 
-        images = EventVideo.objects.filter(
+        videos = EventVideo.objects.filter(
             event_reg=request.GET.get('event_reg', 0)
         ).order_by('timestamp')
 
-        serializer = EventVideoSerializer(images, many=True)
+        serializer = EventVideoSerializer(videos, many=True)
 
         return Response(
             {
                 "detail": serializer.data,
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+    def delete(self, request):
+
+        video = EventVideo.objects.get(
+            id=str(request.GET.get('id', 0))
+        )
+
+        video.video.delete()
+        video.delete()
+
+        return Response(
+            {
+                "detail": True,
             },
             status=status.HTTP_201_CREATED
         )
@@ -2921,9 +3088,11 @@ class CommentsAndRatingView(APIView):
             eventRegistration = None
             offer = None
             if(request.data.get("is_event") != None and request.data["is_event"] == True):
+                print('is_event')
                 eventRegistration = EventRegistration.objects.get(
                     id=request.data["occasion"]
                 )
+                print('eventRegistration 1', eventRegistration)
                 all_car = CommentsAndRating.objects.filter(
                     occasion__event_id=eventRegistration.event.id,
                     user=request._user,
@@ -2943,6 +3112,7 @@ class CommentsAndRatingView(APIView):
                         avg_user_rating = max_car[0].avg_user_rating
 
             if(request.data.get("is_offer") != None and request.data["is_offer"] == True):
+                print('is_offer')
                 offer = LocalOffer.objects.get(
                     id=request.data["offer"]
                 )
@@ -2970,6 +3140,8 @@ class CommentsAndRatingView(APIView):
                 avg_user_rating = (
                     avg_user_rating + int(request.data.get("user_rating"))) / (avg_user_rating_count+1)
 
+                print('eventRegistration', eventRegistration)
+
                 car = CommentsAndRating()
                 car.user = request._user
                 car.rating = request.data["rating"]
@@ -2996,10 +3168,12 @@ class CommentsAndRatingView(APIView):
             event = Event.objects.get(
                 id=int(request.GET.get('event', '0'))
             )
+            print('event', event)
             all_car = CommentsAndRating.objects.filter(
                 occasion__event_id=event.id,
                 is_active=True
             ).order_by("-timestamp")
+            print('all_car', all_car)
         elif type == "offer":
             offer = LocalOffer.objects.get(
                 id=request.GET.get('offer', '')

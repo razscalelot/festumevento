@@ -1,5 +1,6 @@
 # from dataclasses import fields
 from asyncio import events
+from dataclasses import fields
 from rest_framework import serializers
 from .models import *
 from users.models import User
@@ -157,7 +158,7 @@ class EventCompanyDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventCompanyDetails
-        fields = ('id', 'name', 'gst', 'contact_no', 'email', 'about', 'flat_no',
+        fields = ('id', 'event_reg', 'name', 'gst', 'contact_no', 'email', 'about', 'flat_no',
                   'street', 'area', 'city', 'state', 'pincode', 'image', 'video')
         extra_kwargs = {'id': {'read_only': True}}
 
@@ -170,7 +171,7 @@ class EventPersonalDetailsSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-     
+
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
@@ -178,14 +179,14 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
-    event = EventSerializer(read_only=True)
+    # event = EventSerializer(read_only=True)
 
     class Meta:
         model = EventRegistration
-        fields = ('id', 'location_type', 'occupancy_type', 'capacity', 'location_address',
-                  'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking',
+        fields = ('id', 'event', 'location_type', 'occupancy_type', 'capacity', 'location_address',
+                  'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'flat_no', 'street_name', 'area_name', 'accept_booking', 'orgdiscountsId',
                   'city', 'state', 'pincode', 'longitude', 'latitude',
-                  'permission_letter', 'event', 'status', 'is_verify', 'is_active', 'description', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description')
+                  'permission_letter', 'event', 'status', 'is_verify', 'is_active', 'description', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin')
 
 
 class EventRegistrationSerializer2(serializers.ModelSerializer):
@@ -197,6 +198,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     companydetails = serializers.SerializerMethodField()
     personaldetails = serializers.SerializerMethodField()
     discount_id = serializers.SerializerMethodField()
+    # singal_event = serializers.SerializerMethodField('_user')
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -207,6 +209,11 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
 
+    # def _user(self, obj):
+    #     request = self.context.get('request', None)
+    #     event_id = Event.objects.filter(user_id=request._user.id)
+    #     singal_event = EventSerializer(event_id, many=True)
+    #     return singal_event.data
 
     @staticmethod
     def get_occasion_id(obj):
@@ -214,10 +221,10 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         occasion_id = CommentsAndRatingSerializer(occasion, many=True)
         return occasion_id.data
 
-    
     @staticmethod
     def get_discount_id(obj):
-        discount = OrgDiscounts.objects.filter(orgdiscountsId=obj.orgdiscountsId_id)
+        discount = OrgDiscounts.objects.filter(
+            orgdiscountsId=obj.orgdiscountsId_id)
         discount_id = OrgDiscountSerializers(discount, many=True)
         return discount_id.data
 
@@ -261,7 +268,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         fields = ('id', 'location_type', 'occupancy_type', 'discount_id', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking', 'event',
                   'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
-
+        
 
 class EventImageSerializer(serializers.ModelSerializer):
 
@@ -301,6 +308,12 @@ class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class OrgEquipmentSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = OrgEquipment
+        fields = '__all__'
+
+
 class DiscountSerializers(serializers.ModelSerializer):
     class Meta:
         model = Discounts
@@ -308,9 +321,20 @@ class DiscountSerializers(serializers.ModelSerializer):
 
 
 class OrgDiscountSerializers(serializers.ModelSerializer):
+    orgequipmentdiscounts_id = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_orgequipmentdiscounts_id(obj):
+        orgequipmentdiscounts = OrgEquipment.objects.filter(
+            orgequipmentdiscounts_id=obj.orgdiscountsId)
+        orgequipmentdiscounts_id = OrgEquipmentSerializers(
+            orgequipmentdiscounts, many=True)
+        return orgequipmentdiscounts_id.data
+
     class Meta:
         model = OrgDiscounts
-        fields = '__all__'
+        fields = ('orgdiscountsId', 'orguser', 'orgdiscount_id',
+                  'orgdiscount', 'orgdescription', 'orgequipmentdiscounts_id')
 
 
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):

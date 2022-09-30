@@ -15,8 +15,8 @@ urlpatterns = [
     path('event/register/', views.EventRegister.as_view()),
 
     # Get all events
-    path('events/', views.Events.as_view()),
-    path('events/<int:id>', views.Events.as_view()),
+    path('events/', views.SetEvent.as_view()),
+    path('events/<int:id>', views.SetEvent.as_view()),
 
     # Get org events 
     path('org/event/', views.OrgEvents.as_view()),
@@ -29,11 +29,19 @@ urlpatterns = [
     path('discount/<int:id>', views.DiscountView.as_view(), name="DiscountView"),
 
     path('org/discount', views.OrgDiscountView.as_view(), name="DiscountView"),
+    path('org/equipment/discount', views.OrgDiscountView.as_view(), name="DiscountView"),
     path('org/discount/<int:id>', views.OrgDiscountView.as_view(), name="DiscountView"),
 
-    # path('event/<int:id>', views.Events.as_view()),
+    
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),
+
+    path('event/companydetail', views.EventCompanyDetailsView.as_view(), name="EventCompanyDetailsView"),
+    path('event/companydetail/image', views.EventCompanyImageView.as_view(), name="EventCompanyImageView"),
+    path('event/companydetail/video', views.EventCompanyVideoView.as_view(), name="EventCompanyVideoView"),
+
+    path('event/personaldetail', views.EventPersonalDetailsView.as_view(), name="EventPersonalDetailsView"),
+
     path('event/pricematrix/', views.EventPriceMatrix.as_view()),
     path('event/attendee/new',views.UserAttendee.as_view()),
     path('local/attendee',views.UserLocalBooking.as_view()),    
