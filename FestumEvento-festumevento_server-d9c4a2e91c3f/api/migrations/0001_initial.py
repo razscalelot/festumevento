@@ -430,7 +430,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=500)),
                 ('no_of_seat', models.IntegerField()),
-                ('seat_location', models.CharField(choices=[('NONE', api.models.SeatVerticalLocationChoice('NONE')), ('TOP', api.models.SeatVerticalLocationChoice('TOP')), ('BOTTOM', api.models.SeatVerticalLocationChoice('BOTTOM'))], max_length=100)),
+                ('seat_location', models.CharField(choices=[('TOP', api.models.SeatVerticalLocationChoice('TOP')), ('CENTER', api.models.SeatVerticalLocationChoice('CENTER')), ('BOTTOM', api.models.SeatVerticalLocationChoice('BOTTOM'))], max_length=100)),
                 ('seat_side', models.CharField(choices=[('NONE', api.models.SeatHorizontalLocationChoice('NONE')), ('LEFT', api.models.SeatHorizontalLocationChoice('LEFT')), ('RIGHT', api.models.SeatHorizontalLocationChoice('RIGHT'))], max_length=100)),
                 ('table_person_capacity', models.IntegerField(blank=True, null=True)),
                 ('person_capacity', models.IntegerField(blank=True, null=True)),

@@ -921,13 +921,13 @@ class SeatingArrangementMaster(models.Model):
 
 
 class SeatVerticalLocationChoice(Enum):
-    none = "NONE"
     top = "TOP"
+    center = "CENTER"
     bottom = "BOTTOM"
 
     @classmethod
     def all(cls):
-        return [SeatVerticalLocationChoice.none, SeatVerticalLocationChoice.top, SeatVerticalLocationChoice.bottom]
+        return [SeatVerticalLocationChoice.top, SeatVerticalLocationChoice.center, SeatVerticalLocationChoice.bottom]
 
 
 class SeatHorizontalLocationChoice(Enum):
