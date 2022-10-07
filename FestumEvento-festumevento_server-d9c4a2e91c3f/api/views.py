@@ -277,6 +277,9 @@ class SetEvent(APIView):
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     def get(self, request, id=0):
+        limit = int(request.GET.get('limit', 5))
+        page = int(request.GET.get('page', 1))
+
         if id != 0:
             sub = EventRegistration.objects.filter(
                 is_active=True, event__user=request.user, id=id).order_by('start_date')
@@ -286,10 +289,13 @@ class SetEvent(APIView):
                 event__user=request.user
             ).order_by('start_date')
 
-        serializer = EventRegistrationSerializer2(sub, many=True)
-        data = serializer.data
+        total = sub.count()
+        start = (page - 1) * limit
+        end = page * limit
+
+        serializer = EventRegistrationSerializer2(sub[start:end], many=True)
+        data = serializer.data    
         for event in data:
-            print('event', event)
             id = int(event["id"])
             ratings = CommentsAndRating.objects.filter(
                 occasion=id,
@@ -337,8 +343,14 @@ class SetEvent(APIView):
                     offer["user_rating"] = 0.0
             shop["offers"] = offerData
 
+
         return Response(
             {
+                "total": total,
+                "page": page,
+                "last_page": math.ceil(total / limit),
+                # "next": 'next',
+                # "previous": 'previous',
                 "events": data,
                 "local": shopSerializerData
 
@@ -1636,37 +1648,30 @@ def seatPriceCalcutater(occasion, seats):
     total_count = 0
 
     for seat in seats:
-        print('seat', seat)
         try:
             seatObj = SeatingArrangementBooking.objects.get(
                 occasion_id=occasion,
-                id=seat
+                id=seat['seat_booking_id']
             )
-            print('seatObj', seatObj)
             total_booking_count = seatObj.total_booking_count
-            print('total_booking_count', total_booking_count)
             if total_booking_count == None:
                 total_booking_count = 0
-            total_seat = total_booking_count + seatObj.no_of_seat
-            print('total_seat', total_seat)
-            if total_seat < seatObj.no_of_seat:
-                print('if')
-                seatObj.is_error = True
-                seatObj.error_code = 1001
-                seatObj.no_of_seat = 0
-                seatObj.amount = 0
-                seatObj.total_seat = 0
+            total_seat = total_booking_count + seat['no_of_seat']
+            if total_seat > seatObj.no_of_seat:
+                seat['is_error'] = True
+                seat['error_code'] = 1001
+                seat['no_of_seat'] = 0
+                seat['amount'] = 0
+                seat['total_seat'] = 0
                 canBookingDone = canBookingDone and False
             else:
-                print('else')
-                seatObj.is_error = False
-                seatObj.error_code = 0000
-                seatObj.amount = seatObj.no_of_seat * seatObj.price_per_seat
-                seatObj.total_seat = total_seat
-                total_amount = total_amount + seatObj.amount
+                seat['is_error'] = False
+                seat['error_code'] = 0000
+                seat['amount'] = seat['no_of_seat'] * seatObj.price_per_seat
+                seat['total_seat'] = total_seat
+                total_amount = total_amount + seat['amount']
                 total_count = total_count + total_seat
         except:
-            print('except')
             seat['is_error'] = True
             seat['error_code'] = 1002
             seat['no_of_seat'] = 0

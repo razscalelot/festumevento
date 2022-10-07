@@ -187,12 +187,14 @@ class UserLogout(APIView):
 class SendOtp(APIView):
     def post(self, request, **kwargs):
         mobile_number = request.data.get("mobile")
-        
+
         forgot_password = request.GET.get('forgot_password')
         if forgot_password == 'true':
+            mobile = models.User.objects.filter(mobile=str(mobile_number))
             otpRes = send_otp_request(mobile_number)
-            if otpRes["Status"] != "Error":
-                mobile = models.OtpLog.objects.filter(mobile=str(mobile_number))
+            if otpRes["Status"] != "Error" and mobile.exists():
+                mobile = models.OtpLog.objects.filter(
+                    mobile=str(mobile_number))
                 for m in mobile:
                     m.smsKey = otpRes["Details"]
                     m.save()
@@ -212,7 +214,7 @@ class SendOtp(APIView):
                     },
                     status=httpStatus.HTTP_400_BAD_REQUEST
                 )
-            
+
         if mobile_number:
             mobile = models.User.objects.filter(mobile=str(mobile_number))
             print('mobile', mobile)
@@ -269,15 +271,14 @@ class VerifyOtp(APIView):
             otp_log = models.OtpLog.objects.filter(
                 mobile__iexact=mobile_number, smsKey=key)
             if not c_user.exists() and otp_log.exists():
+                print('verify')
                 verify = verify_otp_request(key, otp)
-                if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":    
+                if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
 
                     for otp_verify in otp_log:
-                        print(otp_verify.is_verify)
                         otp_verify.is_verify = True
                         otp_verify.save()
-                        print(otp_verify.is_verify)
-                        
+
                     return Response(
                         {
                             "status": True,
@@ -292,6 +293,24 @@ class VerifyOtp(APIView):
                         },
                         status=httpStatus.HTTP_400_BAD_REQUEST
                     )
+            elif c_user.exists() and otp_log.exists():
+                print('forgot')
+                exist = otp_log[0].is_verify == True
+                if exist:
+                    verify = verify_otp_request(key, otp)
+                    return Response(
+                        {
+                            "status": True,
+                            "Details": verify["Details"]
+                        }
+                    )
+                return Response(
+                    {
+                        "status": False,
+                        "detail": "You are not register with us"
+                    },
+                    status=httpStatus.HTTP_400_BAD_REQUEST
+                )
             else:
                 return Response(
                     {
@@ -313,39 +332,25 @@ class VerifyOtp(APIView):
 class VerifyOtpChangePassword(APIView):
     def post(self, request, format='json'):
         mobile_number = request.data.get("mobile")
-        key = request.data.get("key")
-        otp = request.data.get("otp")
         password = request.data.get("password")
         confirm_password = request.data.get("confirm_password")
 
-        if mobile_number and key and otp and password and confirm_password:
+        if password and confirm_password:
             if password == confirm_password and len(str(password)) >= 8:
                 mobile_number = str(mobile_number)
                 c_user = models.User.objects.filter(
                     mobile__iexact=mobile_number)
-                otp_log = models.OtpLog.objects.filter(
-                    mobile__iexact=mobile_number, smsKey=key, is_verify=True)
-                if c_user.exists() and otp_log.exists():
-                    verify = verify_otp_request(key, otp)
-                    if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
-                        c_user = c_user[0]
-                        c_user.set_password(password)
-                        c_user.save()
-                        return Response(
-                            {
-                                "status": True,
-                                "Details": "Password Changed"
-                            },
-                            status=httpStatus.HTTP_200_OK
-                        )
-                    else:
-                        return Response(
-                            {
-                                "status": False,
-                                "error": verify["Details"]
-                            },
-                            status=httpStatus.HTTP_400_BAD_REQUEST
-                        )
+                if c_user.exists():
+                    c_user = c_user[0]
+                    c_user.set_password(password)
+                    c_user.save()
+                    return Response(
+                        {
+                            "status": True,
+                            "Details": "Password Changed"
+                        },
+                        status=httpStatus.HTTP_200_OK
+                    )
                 else:
                     return Response(
                         {
