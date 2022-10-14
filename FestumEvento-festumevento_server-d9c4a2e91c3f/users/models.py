@@ -1,6 +1,8 @@
+from email.policy import default
 from django.contrib.auth.models import AbstractUser, BaseUserManager, AbstractBaseUser
 from django.db import models
 from django.core.validators import validate_email
+from sqlalchemy import null
 
 
 # Create your models here
@@ -91,12 +93,18 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     mobile = models.CharField(max_length=10, unique=True)
+    profile_pic = models.FileField(upload_to='media/image/profile/', blank=True, null=True, default="media/image/profile/default.jpg")
     country_code = models.CharField(max_length=6)
+    dob = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    pincode = models.CharField(max_length=100, blank=True, null=True)
+    state = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    about = models.TextField(null=True, blank=True)
     user_type_data = ((0, 'superadmin'), (1, 'admin'), (2, 'subadmin'),
                       (3, 'executive'), (4, 'organizer'), (5, 'user'))
     role = models.CharField(
         max_length=250, default=5, choices=user_type_data)
-    about = models.TextField(null=True, blank=True)
     admin = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
     verify = models.BooleanField(default=False)

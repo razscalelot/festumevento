@@ -44,7 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.User
-        fields = ('id', 'name', 'email', 'mobile', 'country_code', 'role', 'active', 'verify', 'created_date', 'password',
+        fields = ('id', 'name', 'email', 'mobile', 'profile_pic', 'country_code', 'dob', 'city', 'pincode', 'state', 'country', 'role', 'active', 'verify', 'created_date', 'password',
                   'confirm_password', 'status', 'refer_code', 'my_refer_code', 'fcm_token', 'about')
 
 
@@ -52,18 +52,30 @@ class UserUpdateProfileSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255, write_only=True, required=False)
     email = serializers.CharField(max_length=255, write_only=True, required=False)
     mobile = serializers.CharField(max_length=20, write_only=True, required=False)
+    profile_pic = serializers.ImageField(write_only=True, required=False)
     country_code = serializers.CharField(max_length=10, write_only=True, required=False)
+    dob =serializers.CharField(max_length=10, write_only=True, required=False)
+    city =serializers.CharField(max_length=10, write_only=True, required=False)
+    pincode =serializers.CharField(max_length=10, write_only=True, required=False)
+    state =serializers.CharField(max_length=10, write_only=True, required=False)
+    country =serializers.CharField(max_length=10, write_only=True, required=False)
     about = serializers.CharField(max_length=5000, write_only=True, required=False)
 
     class Meta:
         model = models.User
-        fields = ['name', 'email', 'mobile', 'country_code', 'about']
+        fields = ['name', 'email', 'mobile', 'profile_pic', 'country_code', 'dob', 'city', 'pincode', 'state', 'country', 'about']
 
     def validate(self, attrs):
         name = attrs.get('name')
         email = attrs.get('email')
         mobile = attrs.get('mobile')
+        profile_pic = attrs.get('profile_pic')
         country_code = attrs.get('country_code')
+        dob = attrs.get('dob')
+        city = attrs.get('city')
+        pincode = attrs.get('pincode')
+        state = attrs.get('state')
+        country = attrs.get('country')
         about = attrs.get('about')
         user = self.context.get('user')
         if name:
@@ -72,8 +84,20 @@ class UserUpdateProfileSerializer(serializers.Serializer):
             user.email = email
         if mobile:
             user.mobile = mobile
+        if profile_pic:
+            user.profile_pic = profile_pic
         if country_code:
             user.country_code = country_code
+        if dob:
+            user.dob = dob
+        if city:
+            user.city = city
+        if pincode:
+            user.pincode = pincode
+        if state:
+            user.state = state
+        if country:
+            user.country = country
         if about:
             user.about = about
         user.save()

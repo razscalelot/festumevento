@@ -46,6 +46,7 @@ import csv
 import pandas as pd
 from rest_framework import generics
 from currency_converter import CurrencyConverter
+from itertools import chain
 # from api.chatterbot import bot
 
 # Create your views here.
@@ -188,10 +189,10 @@ class OrgEvents(APIView):
     def get(self, request, id=0):
         if id != 0:
             event = Event.objects.filter(
-                is_active=True, user=request.user, id=id)
+                is_active=True, user=request.user, id=id).order_by('-id')
         else:
             event = Event.objects.filter(
-                is_active=True, user=request.user)
+                is_active=True, user=request.user).order_by('-id')
 
         serializer = EventSerializer(event, many=True)
 
@@ -222,8 +223,7 @@ class OrgEvents(APIView):
         serializer = EventSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print("new")
-        return Response({"status": True}, status=status.HTTP_201_CREATED)
+        return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
 
     def put(self, request, id):
         event = Event.objects.get(id=id)
@@ -233,7 +233,6 @@ class OrgEvents(APIView):
         event.is_other = request.data["is_other"]
         event.is_active = True
         event.save()
-        print("old")
         return Response({"status": True}, status=status.HTTP_201_CREATED)
 
 
@@ -386,6 +385,34 @@ class EventRegister(APIView):
                  #  "error": str(verror)
                  "error": serializer.errors
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    def put(self, request, id=0):
+        vstatus = False
+        verror = None
+        print('request.data', request.data)
+        event = EventRegistration.objects.get(id=id)
+        serializer = EventRegistrationSerializer(event, data=request.data)
+
+        try:
+            vstatus = serializer.is_valid(raise_exception=True)
+        except Exception as error:
+            verror = error
+
+        if vstatus:
+            model_obj = serializer.save()
+            # sub = get_Subscription_user(request._user)[0]
+            # sub.used_post = sub.used_post+1
+            # sub.used_days = sub.used_days+ (model_obj.end_date -model_obj.start_date).days
+            # sub.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                {"status": vstatus,
+                 #  "error": str(verror)
+                 "error": serializer.errors
+                 }, status=status.HTTP_406_NOT_ACCEPTABLE)
+    
 
     def get(self, request):
         sub = EventRegistration.objects.filter(
@@ -902,6 +929,24 @@ class EventVideos(APIView):
         return Response(
             {
                 "detail": True,
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+class EventGallery(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = request._user.id
+        print('user ', user)
+        images = EventImage.objects.filter(event_reg__event_id__user_id=user)
+        image_serializer = EventImageSerializer(images, many=True)
+        videos = EventVideo.objects.filter(event_reg__event_id__user_id=user)
+        video_serializer = EventVideoSerializer(videos, many=True)
+        gallery = list(chain(image_serializer.data, video_serializer.data))
+
+        return Response(
+            {
+                "gallery": gallery
             },
             status=status.HTTP_201_CREATED
         )

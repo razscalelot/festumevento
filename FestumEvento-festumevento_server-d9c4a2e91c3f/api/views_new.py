@@ -219,7 +219,19 @@ class SeatingArrangementBookingView(APIView):
     def get(self, request):
         occasion = int(str( request.GET.get('occasion', 0)))
 
-        seats= SeatingArrangementBooking.objects.all()
+        seats= SeatingArrangementBooking.objects.filter(occasion_id=occasion)
 
         seats_ser = SeatingArrangementBookingSerializer(seats, many=True)
-        return Response({"status": True, "detail": seats_ser.data}, status=status.HTTP_201_CREATED)
+        return Response({"status": True, "detail": seats_ser.data}, status=status.HTTP_200_OK)
+
+
+    def put(self, request):
+        occasion = int(str( request.GET.get('occasion', 0)))
+        id = request.data['id']
+
+        seats = SeatingArrangementBooking.objects.filter(id=id, occasion_id=occasion)
+        serializer = SeatingArrangementBookingSerializerInsert(seats, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"status": True, "detail": serializer.data}, status=status.HTTP_200_OK)
+        return Response({"status": False, "error": serializer.errors}, status=status.HTTP_406_NOT_ACCEPTABLE)

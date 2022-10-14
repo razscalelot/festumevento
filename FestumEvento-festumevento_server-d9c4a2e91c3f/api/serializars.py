@@ -268,7 +268,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
         fields = ('id', 'location_type', 'occupancy_type', 'discount_id', 'occasion_id', 'occasion', 'companydetails', 'personaldetails', 'capacity', 'location_address',
                   'address', 'poster', 'start_date', 'end_date', 'start_time', 'end_time', 'accept_booking', 'event',
                   'permission_letter', 'status', 'is_verify', 'is_active', 'description', 'city', 'state', 'pincode', 'longitude', 'latitude', 'sold', 'is_food', 'food_type', 'food_description', 'is_equipment', 'equipment_description', 'image', 'video', 't_and_c', 'facebook', 'twitter', 'youtube', 'pinterest', 'instagram', 'linkedin', 'calender', 'live')
-        
+
 
 class EventImageSerializer(serializers.ModelSerializer):
 
@@ -283,21 +283,31 @@ class EventVideoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class SeatingArrangementMasterSerializer(serializers.ModelSerializer):
-    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-
-    class Meta:
-        model = SeatingArrangementMaster
-        fields = "__all__"
-
-
 class SeatingArrangementBookingSerializer(serializers.ModelSerializer):
-    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-    seat = SeatingArrangementMasterSerializer(read_only=True)
+    # timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+    # seat = SeatingArrangementMasterSerializer(read_only=True)
 
     class Meta:
         model = SeatingArrangementBooking
         fields = "__all__"
+
+
+class SeatingArrangementMasterSerializer(serializers.ModelSerializer):
+    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+    arrangement = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_arrangement(obj):
+        arrangement_id = SeatingArrangementBooking.objects.filter(
+            seat_id=obj.id)
+        arrangement = SeatingArrangementBookingSerializer(
+            arrangement_id, many=True)
+        return arrangement.data
+
+    class Meta:
+        model = SeatingArrangementMaster
+        fields = ('id', 'name', 'svg', 'timestamp',
+                  'sequence', 'is_active', 'arrangement')
 
 
 class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):

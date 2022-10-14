@@ -36,8 +36,8 @@ def compress(image):
 
 
 class Event(models.Model):
-    name = models.CharField(max_length=255, blank=False, null=False)
-    event_type = models.CharField(max_length=50, blank=False, null=False)
+    name = models.CharField(max_length=255)
+    event_type = models.CharField(max_length=50)
     event_category = models.CharField(max_length=100, blank=False, null=False)
     is_other = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

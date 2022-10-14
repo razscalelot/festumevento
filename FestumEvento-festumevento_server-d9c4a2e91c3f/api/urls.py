@@ -13,6 +13,7 @@ urlpatterns = [
 
     # Register Event
     path('event/register/', views.EventRegister.as_view()),
+    path('event/edit/<int:id>', views.EventRegister.as_view()),
 
     # Get all events
     path('events/', views.SetEvent.as_view()),
@@ -36,6 +37,8 @@ urlpatterns = [
     path('event/image/', views.EventImages.as_view()),
     path('event/video/', views.EventVideos.as_view()),
 
+    path('event/gallery', views.EventGallery.as_view(), name='EventGallery'),
+
     path('event/companydetail', views.EventCompanyDetailsView.as_view(), name="EventCompanyDetailsView"),
     path('event/companydetail/image', views.EventCompanyImageView.as_view(), name="EventCompanyImageView"),
     path('event/companydetail/video', views.EventCompanyVideoView.as_view(), name="EventCompanyVideoView"),
@@ -43,7 +46,7 @@ urlpatterns = [
     path('event/personaldetail', views.EventPersonalDetailsView.as_view(), name="EventPersonalDetailsView"),
 
     path('event/pricematrix/', views.EventPriceMatrix.as_view()),
-    path('event/attendee/new',views.UserAttendee.as_view()),
+    path('event/attendee',views.UserAttendee.as_view()),
     path('local/attendee',views.UserLocalBooking.as_view()),    
     path('event/localoffer/', views.LocalOfferView.as_view()),
     path('event/localoffer/image/', views.LocalOfferImages.as_view()),

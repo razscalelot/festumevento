@@ -74,7 +74,8 @@ class GetUser(APIView):
         serializer = UserUpdateProfileSerializer(
             data=request.data, context={'user': request.user})
         if serializer.is_valid(raise_exception=True):
-            return Response({'status': True, 'msg': "Your profile is updated Successfully."},
+            user = UserSerializer(request._user)
+            return Response({'status': True, "data": user.data, 'msg': "Your profile is updated Successfully."},
                             status=httpStatus.HTTP_200_OK)
         return Response({'status': False, 'msg': "There is some issue in update."},
                         status=httpStatus.HTTP_400_BAD_REQUEST)
@@ -294,8 +295,7 @@ class VerifyOtp(APIView):
                         status=httpStatus.HTTP_400_BAD_REQUEST
                     )
             elif c_user.exists() and otp_log.exists():
-                print('forgot')
-                exist = otp_log[0].is_verify == True
+                exist = otp_log.last().is_verify == True
                 if exist:
                     verify = verify_otp_request(key, otp)
                     return Response(
