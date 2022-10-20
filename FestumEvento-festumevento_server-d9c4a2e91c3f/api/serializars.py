@@ -171,7 +171,6 @@ class EventPersonalDetailsSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Event
         fields = ('id', 'name', 'event_type', 'event_category',
@@ -179,8 +178,6 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 class EventRegistrationSerializer(serializers.ModelSerializer):
-    # event = EventSerializer(read_only=True)
-
     class Meta:
         model = EventRegistration
         fields = ('id', 'event', 'location_type', 'occupancy_type', 'capacity', 'location_address',
@@ -198,7 +195,6 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     companydetails = serializers.SerializerMethodField()
     personaldetails = serializers.SerializerMethodField()
     discount_id = serializers.SerializerMethodField()
-    # singal_event = serializers.SerializerMethodField('_user')
 
     start_date = serializers.DateField(
         allow_null=True, read_only=True, format='%d %b %Y')
@@ -209,11 +205,6 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     end_time = serializers.TimeField(
         allow_null=True, read_only=True, format='%I:%M %p')
 
-    # def _user(self, obj):
-    #     request = self.context.get('request', None)
-    #     event_id = Event.objects.filter(user_id=request._user.id)
-    #     singal_event = EventSerializer(event_id, many=True)
-    #     return singal_event.data
 
     @staticmethod
     def get_occasion_id(obj):
@@ -224,7 +215,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     @staticmethod
     def get_discount_id(obj):
         discount = OrgDiscounts.objects.filter(
-            orgdiscountsId=obj.orgdiscountsId_id)
+            event_id=obj.orgdiscountsId)
         discount_id = OrgDiscountSerializers(discount, many=True)
         return discount_id.data
 
@@ -318,9 +309,9 @@ class SeatingArrangementBookingSerializerInsert(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class OrgEquipmentSerializers(serializers.ModelSerializer):
+class OrgEquipmentIdSerializers(serializers.ModelSerializer):
     class Meta:
-        model = OrgEquipment
+        model = OrgEquipmentId
         fields = '__all__'
 
 
@@ -331,20 +322,24 @@ class DiscountSerializers(serializers.ModelSerializer):
 
 
 class OrgDiscountSerializers(serializers.ModelSerializer):
-    orgequipmentdiscounts_id = serializers.SerializerMethodField()
+    equipment_id = serializers.SerializerMethodField()
 
     @staticmethod
-    def get_orgequipmentdiscounts_id(obj):
-        orgequipmentdiscounts = OrgEquipment.objects.filter(
-            orgequipmentdiscounts_id=obj.orgdiscountsId)
-        orgequipmentdiscounts_id = OrgEquipmentSerializers(
-            orgequipmentdiscounts, many=True)
-        return orgequipmentdiscounts_id.data
+    def get_equipment_id(obj):
+        discount = OrgEquipmentId.objects.filter(
+            orgdiscount_id=obj.id, orgdiscount_id_id__user_id_id=obj.user_id)
+        equipment_id = OrgEquipmentIdSerializers(discount, many=True)
+        # equipment_id = []
+        # for i in equipment.data:
+        #     seat = SeatingArrangementBooking.objects.filter(id=int(i['equipment_id']))
+        #     equipment = SeatingArrangementBookingSerializer(seat, many=True)
+        #     equipment_id.append(equipment.data)
+        return equipment_id.data
 
     class Meta:
         model = OrgDiscounts
-        fields = ('orgdiscountsId', 'orguser', 'orgdiscount_id',
-                  'orgdiscount', 'orgdescription', 'orgequipmentdiscounts_id')
+        fields = ('id', 'event_id', 'user_id',
+                  'discount_type', 'discount', 'equipment_id')
 
 
 class OrgEventRegistrationSerializer(serializers.ModelSerializer):
@@ -376,7 +371,7 @@ class OrgEventRegistrationSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_discount_id(obj):
-        discount = OrgDiscounts.objects.filter(orgdiscountsId=obj.id)
+        discount = OrgDiscounts.objects.filter(id=obj.id)
         discount_id = OrgDiscountSerializers(discount, many=True)
         return discount_id.data
 

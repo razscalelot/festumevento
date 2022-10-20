@@ -272,7 +272,6 @@ class VerifyOtp(APIView):
             otp_log = models.OtpLog.objects.filter(
                 mobile__iexact=mobile_number, smsKey=key)
             if not c_user.exists() and otp_log.exists():
-                print('verify')
                 verify = verify_otp_request(key, otp)
                 if verify["Status"] == "Success" and verify["Details"] == "OTP Matched":
 

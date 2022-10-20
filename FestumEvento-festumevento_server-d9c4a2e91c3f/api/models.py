@@ -124,29 +124,28 @@ class Discounts(models.Model):
         return self.discount
 
 
+
 class OrgDiscounts(models.Model):
-    orgdiscountsId = models.AutoField(primary_key=True)
-    orguser = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
-    orgdiscount_id = models.ForeignKey(Discounts, on_delete=models.CASCADE)
-    orgdiscount = models.CharField(max_length=100, null=True, blank=True)    
-    orgdescription = models.TextField(blank=True, null=True)
+    event_id = models.ForeignKey(Event, related_name='event_id',  on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
+    discount_type = models.CharField(max_length=50, choices=DISCOUNT_TYPE)
+    discount = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.orgdiscount_id)
+        return str(self.discount)
 
 
-class OrgEquipment(models.Model):
-    orgequipmentId = models.AutoField(primary_key=True)
-    orgequipmentdiscounts_id = models.ForeignKey(OrgDiscounts, related_name='orgequipmentdiscounts_id', on_delete=models.CASCADE)
-    orgequipment_id = models.ForeignKey('SeatingArrangementBooking', related_name='orgequipment_id', on_delete=models.CASCADE)
-    orgequipmentdiscounts = models.CharField(max_length=200)
+class OrgEquipmentId(models.Model):
+    orgdiscount_id = models.ForeignKey(OrgDiscounts, related_name="orgdiscount_id", on_delete=models.CASCADE)
+    equipment_id = models.ForeignKey('SeatingArrangementBooking', related_name='equipment_id', on_delete=models.CASCADE)    
     is_active = models.BooleanField(default=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
-        return self.orgequipmentdiscounts
+        return str(self.equipment_id)
+
 
 
 
