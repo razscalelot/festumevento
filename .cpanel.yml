@@ -1,0 +1,4 @@
+deployment: 
+  tasks: 
+    -export DEPLOPATH=/home/user/public_html/festum.dev.scalelot.com 
+    -/bin/cp * $DEPLOYPATH
