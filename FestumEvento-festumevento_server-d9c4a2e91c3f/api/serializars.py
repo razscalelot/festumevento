@@ -215,7 +215,7 @@ class EventRegistrationSerializer2(serializers.ModelSerializer):
     @staticmethod
     def get_discount_id(obj):
         discount = OrgDiscounts.objects.filter(
-            event_id=obj.orgdiscountsId)
+            event_id=obj.orgdiscountsId_id)
         discount_id = OrgDiscountSerializers(discount, many=True)
         return discount_id.data
 

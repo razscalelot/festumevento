@@ -282,23 +282,24 @@ class SetEvent(APIView):
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     def get(self, request, id=0):
-        limit = int(request.GET.get('limit', 5))
-        page = int(request.GET.get('page', 1))
+        # limit = int(request.GET.get('limit', 5))
+        # page = int(request.GET.get('page', 1))
 
         if id != 0:
             sub = EventRegistration.objects.filter(
-                is_active=True, event__user=request.user, id=id).order_by('start_date')
+                is_active=True, event__user=request.user.id, id=id).order_by('-id') #.order_by('start_date')
         else:
             sub = EventRegistration.objects.filter(
                 is_active=True,
-                event__user=request.user
-            ).order_by('start_date')
+                event__user=request.user.id
+            ).order_by('-id') #.order_by('start_date')
 
-        total = sub.count()
-        start = (page - 1) * limit
-        end = page * limit
+        # total = sub.count()
+        # start = (page - 1) * limit
+        # end = page * limit
 
-        serializer = EventRegistrationSerializer2(sub[start:end], many=True)
+        # serializer = EventRegistrationSerializer2(sub[start:end], many=True)
+        serializer = EventRegistrationSerializer2(sub, many=True)
         data = serializer.data
 
         # for d in data:
@@ -358,9 +359,9 @@ class SetEvent(APIView):
 
         return Response(
             {
-                "total": total,
-                "page": page,
-                "last_page": math.ceil(total / limit),
+                # "total": total,
+                # "page": page,
+                # "last_page": math.ceil(total / limit),
                 # "next": 'next',
                 # "previous": 'previous',
                 "events": data,
@@ -375,17 +376,21 @@ class EventRegister(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        print('request.data', request.data)
         vstatus = False
         verror = None
         serializer = EventRegistrationSerializer(data=request.data)
+        print('serializer', serializer)
 
         try:
             vstatus = serializer.is_valid(raise_exception=True)
+            print('vstatus', vstatus)
         except Exception as error:
             verror = error
 
         if vstatus:
-            model_obj = serializer.save()
+            model_obj = serializer.save() 
+            print('serializer.data', serializer.data)           
             return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
         else:
             return Response(

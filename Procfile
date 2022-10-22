@@ -1,1 +1,0 @@
-web: gunicorn FestumEvento-festumevento_server-d9c4a2e91c3f/festumevento.wsgi

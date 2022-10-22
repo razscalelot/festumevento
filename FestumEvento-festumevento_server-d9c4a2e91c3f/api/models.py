@@ -265,7 +265,7 @@ class EventImage(models.Model):
 class EventVideo(models.Model):
     video = models.FileField(upload_to='media/video/events')
     description = models.TextField()
-    thumbnail = models.ImageField(upload_to='media/video/thumbnail/events')
+    thumbnail = models.ImageField(upload_to='media/video/thumbnail/events', null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
 
@@ -286,7 +286,7 @@ class EventCompanyDetails(models.Model):
     event_reg = models.ForeignKey(EventRegistration, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     gst = models.FileField(
-        max_length=255, upload_to='image/events/company/gst')
+        max_length=255, upload_to='image/events/company/gst', blank=True, null=True)
     contact_no = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     about = models.TextField()
