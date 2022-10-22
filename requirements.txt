@@ -1,112 +1,112 @@
-pip install -U asgiref==3.5.2
-pip install -U astroid==2.3.3
-pip install -U atomicwrites==1.3.0
-pip install -U attrs==19.3.0
-pip install -U autobahn==21.2.1
-pip install -U Automat==20.2.0
-pip install -U autopep8==1.4.4
-pip install -U CacheControl==0.12.11
-pip install -U cachetools==4.2.4
-pip install -U certifi==2019.9.11
-pip install -U cffi==1.15.0
-pip install -U channels==3.0.4
-pip install -U chardet==3.0.4
-pip install -U charset-normalizer==2.0.12
-pip install -U ChatterBot==1.0.0
-pip install -U chatterbot-corpus==1.2.0
-pip install -U choices==0.1
-pip install -U click==8.0.4
-pip install -U colorama==0.4.1
-pip install -U constantly==15.1.0
-pip install -U cryptography==37.0.2
-pip install -U CurrencyConverter==0.16.12
-pip install -U daphne==3.0.2
-pip install -U defusedxml==0.6.0
-pip install -U Django==2.2.7
-pip install -U django-allauth==0.40.0
-pip install -U django-cors-headers==3.8.0
-pip install -U django-crispy-forms==1.9.1
-pip install -U django-rest-auth==0.9.5
-pip install -U django-sslserver==0.22
-pip install -U djangorestframework==3.10.3
-pip install -U et-xmlfile==1.1.0
-pip install -U firebase-admin==5.2.0
-pip install -U forex-python==1.8
-pip install -U google-api-core==2.8.2
-pip install -U google-api-python-client==2.51.0
-pip install -U google-auth==2.8.0
-pip install -U google-auth-httplib2==0.1.0
-pip install -U google-cloud-core==2.3.1
-pip install -U google-cloud-firestore==2.5.3
-pip install -U google-cloud-storage==2.0.0
-pip install -U google-crc32c==1.3.0
-pip install -U google-resumable-media==2.3.3
-pip install -U googleapis-common-protos==1.56.2
-pip install -U grpcio==1.46.3
-pip install -U grpcio-status==1.46.3
-pip install -U httplib2==0.20.4
-pip install -U hyperlink==21.0.0
-pip install -U idna==2.8
-pip install -U imutils==0.5.4
-pip install -U incremental==21.3.0
-pip install -U isort==4.3.21
-pip install -U joblib==1.1.0
-pip install -U lazy-object-proxy==1.4.3
-pip install -U mathparse==0.1.2
-pip install -U mccabe==0.6.1
-pip install -U more-itertools==7.2.0
-pip install -U msgpack==1.0.4
-pip install -U mysqlclient==2.1.0
-pip install -U nltk==3.6.7
-pip install -U numpy==1.22.3
-pip install -U oauthlib==3.1.0
-pip install -U opencv-python==4.5.5.64
-pip install -U openexchangerates==0.1.1
-pip install -U openpyxl==3.0.10
-pip install -U packaging==19.2
-pip install -U pandas
-pip install -U Pillow
-pip install -U Pint==0.17
-pip install -U pluggy==0.13.0
-pip install -U proto-plus==1.20.6
-pip install -U protobuf==3.19.4
-pip install -U py==1.8.0
-pip install -U pyasn1==0.4.8
-pip install -U pyasn1-modules==0.2.8
-pip install -U pycodestyle==2.5.0
-pip install -U pycparser==2.20
-pip install -U pyfcm==1.4.7
-pip install -U PyJWT==2.4.0
-pip install -U pylint==2.4.4
-pip install -U pymongo==3.12.3
-pip install -U pyOpenSSL==22.0.0
-pip install -U pyparsing==2.4.5
-pip install -U pytest==5.2.4
-pip install -U python-dateutil==2.7.5
-pip install -U python3-openid==3.1.0
-pip install -U pytz==2022.1
-pip install -U pyvips==2.1.15
-pip install -U PyYAML==3.13
-pip install -U regex==2022.4.24
-pip install -U requests==2.22.0
-pip install -U requests-oauthlib==1.3.0
-pip install -U reverse==0.1.0
-pip install -U rsa==4.8
-pip install -U save==0.1
-pip install -U service-identity==21.1.0
-pip install -U simplejson==3.17.6
-pip install -U six==1.13.0
-pip install -U SQLAlchemy==1.2.19
-pip install -U sqlparse==0.3.0
-pip install -U tqdm==4.64.0
-pip install -U twilio==3.0.0
-pip install -U Twisted==22.4.0
-pip install -U twisted-iocpsupport==1.0.2
-pip install -U txaio==22.2.1
-pip install -U typing_extensions==4.1.1
-pip install -U uritemplate==4.1.1
-pip install -U urllib3==1.25.7
-pip install -U wcwidth==0.1.7
-pip install -U wrapt==1.11.2
-pip install -U zope.interface==5.4.0
-pip install -U gunicorn
+asgiref==3.5.2
+astroid==2.3.3
+atomicwrites==1.3.0
+attrs==19.3.0
+autobahn==21.2.1
+Automat==20.2.0
+autopep8==1.4.4
+CacheControl==0.12.11
+cachetools==4.2.4
+certifi==2019.9.11
+cffi==1.15.0
+channels==3.0.4
+chardet==3.0.4
+charset-normalizer==2.0.12
+ChatterBot==1.0.0
+chatterbot-corpus==1.2.0
+choices==0.1
+click==8.0.4
+colorama==0.4.1
+constantly==15.1.0
+cryptography==37.0.2
+CurrencyConverter==0.16.12
+daphne==3.0.2
+defusedxml==0.6.0
+Django==2.2.7
+django-allauth==0.40.0
+django-cors-headers==3.8.0
+django-crispy-forms==1.9.1
+django-rest-auth==0.9.5
+django-sslserver==0.22
+djangorestframework==3.10.3
+et-xmlfile==1.1.0
+firebase-admin==5.2.0
+forex-python==1.8
+google-api-core==2.8.2
+google-api-python-client==2.51.0
+google-auth==2.8.0
+google-auth-httplib2==0.1.0
+google-cloud-core==2.3.1
+google-cloud-firestore==2.5.3
+google-cloud-storage==2.0.0
+google-crc32c==1.3.0
+google-resumable-media==2.3.3
+googleapis-common-protos==1.56.2
+grpcio==1.46.3
+grpcio-status==1.46.3
+httplib2==0.20.4
+hyperlink==21.0.0
+idna==2.8
+imutils==0.5.4
+incremental==21.3.0
+isort==4.3.21
+joblib==1.1.0
+lazy-object-proxy==1.4.3
+mathparse==0.1.2
+mccabe==0.6.1
+more-itertools==7.2.0
+msgpack==1.0.4
+mysqlclient==2.1.0
+nltk==3.6.7
+numpy==1.22.3
+oauthlib==3.1.0
+opencv-python==4.5.5.64
+openexchangerates==0.1.1
+openpyxl==3.0.10
+packaging==19.2
+pandas
+Pillow
+Pint==0.17
+pluggy==0.13.0
+proto-plus==1.20.6
+protobuf==3.19.4
+py==1.8.0
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycodestyle==2.5.0
+pycparser==2.20
+pyfcm==1.4.7
+PyJWT==2.4.0
+pylint==2.4.4
+pymongo==3.12.3
+pyOpenSSL==22.0.0
+pyparsing==2.4.5
+pytest==5.2.4
+python-dateutil==2.7.5
+python3-openid==3.1.0
+pytz==2022.1
+pyvips==2.1.15
+PyYAML==3.13
+regex==2022.4.24
+requests==2.22.0
+requests-oauthlib==1.3.0
+reverse==0.1.0
+rsa==4.8
+save==0.1
+service-identity==21.1.0
+simplejson==3.17.6
+six==1.13.0
+SQLAlchemy==1.2.19
+sqlparse==0.3.0
+tqdm==4.64.0
+twilio==3.0.0
+Twisted==22.4.0
+twisted-iocpsupport==1.0.2
+txaio==22.2.1
+typing_extensions==4.1.1
+uritemplate==4.1.1
+urllib3==1.25.7
+wcwidth==0.1.7
+wrapt==1.11.2
+zope.interface==5.4.0
+gunicorn
