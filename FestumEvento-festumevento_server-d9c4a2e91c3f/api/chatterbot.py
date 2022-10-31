@@ -4,7 +4,7 @@ from chatterbot import trainers
 
 from chatterbot import response_selection
 
-bot = ChatBot(name='Festum Evento', read_only=True,
+bot = ChatBot(name='Festum Evento',
               response_selection_method=response_selection.get_random_response,
               trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
               preprocessors=[
