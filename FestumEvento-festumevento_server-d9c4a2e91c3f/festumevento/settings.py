@@ -156,35 +156,35 @@ print(MEDIA_ROOT)
 # }
 
 # ---------------Production----------------
-DATABASES = {
-    'default':
-        {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'festumevento_uat',
-            'USER': 'main',
-            'PASSWORD': "Nomorob@32",
-            'HOST': "139.59.90.124",
-            'PORT': "3306",
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }
-        }
-}
-
 # DATABASES = {
 #     'default':
 #         {
 #             'ENGINE': 'django.db.backends.mysql',
 #             'NAME': 'festumevento_uat',
-#             'USER': 'ubuntu',
-#             'PASSWORD': "",
-#             'HOST': "localhost",
+#             'USER': 'main',
+#             'PASSWORD': "Nomorob@32",
+#             'HOST': "139.59.90.124",
 #             'PORT': "3306",
 #             'OPTIONS': {
 #                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
 #             }
-#         }   
+#         }
 # }
+
+DATABASES = {
+    'default':
+        {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'festumevento_uat',
+            'USER': 'festumuser',
+            'PASSWORD': "festumpassword",
+            'HOST': "173.201.189.160",
+            'PORT': "3306",
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }
+        }   
+}
 
 # --------------Scalelot-----------------------
 # DATABASES = {
