@@ -1,10 +1,9 @@
 from chatterbot.trainers import ListTrainer
 from chatterbot import ChatBot
-from chatterbot import trainers
 
 from chatterbot import response_selection
 
-bot = ChatBot(name='Festum Evento',
+bot = ChatBot(name='Festum Evento', read_only=True,
               response_selection_method=response_selection.get_random_response,
               trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
               preprocessors=[
