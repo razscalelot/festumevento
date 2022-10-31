@@ -176,7 +176,7 @@ DATABASES = {
         {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'festumevento_uat',
-            'USER': 'root',
+            'USER': 'ubuntu',
             'PASSWORD': "",
             'HOST': "localhost",
             'PORT': "3306",
