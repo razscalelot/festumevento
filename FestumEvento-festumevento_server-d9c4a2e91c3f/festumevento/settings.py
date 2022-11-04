@@ -140,36 +140,36 @@ print(MEDIA_ROOT)
 #     }
 # }
 # --------------Local-------------------
-# DATABASES = {
-#     'default':
-#         {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': 'festumevento_uat',
-#             'USER': 'root',
-#             'PASSWORD': "",
-#             'HOST': "localhost",
-#             'PORT': "3306",
-#             'OPTIONS': {
-#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-#             }
-#         }
-# }
-
-# --------------- AWS Production----------------
 DATABASES = {
     'default':
         {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'festumevento_uat',
-            'USER': 'festumuser',
-            'PASSWORD': "festumpassword",
-            'HOST': "173.201.189.160",
+            'USER': 'root',
+            'PASSWORD': "",
+            'HOST': "localhost",
             'PORT': "3306",
             'OPTIONS': {
                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
             }
-        }   
+        }
 }
+
+# --------------- AWS Production----------------
+# DATABASES = {
+#     'default':
+#         {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'festumevento_uat',
+#             'USER': 'festumuser',
+#             'PASSWORD': "festumpassword",
+#             'HOST': "173.201.189.160",
+#             'PORT': "3306",
+#             'OPTIONS': {
+#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#             }
+#         }   
+# }
 
 
 # DATABASES = {
