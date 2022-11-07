@@ -1,8 +1,6 @@
-from email.policy import default
 from django.contrib.auth.models import AbstractUser, BaseUserManager, AbstractBaseUser
 from django.db import models
 from django.core.validators import validate_email
-from sqlalchemy import null
 
 
 # Create your models here

@@ -1,9 +1,10 @@
 from chatterbot.trainers import ListTrainer
 from chatterbot import ChatBot
+from chatterbot import trainers
 
 from chatterbot import response_selection
 
-bot = ChatBot(name='Festum Evento', read_only=True,
+bot = ChatBot(name='Festum Evento', read_only=False,
               response_selection_method=response_selection.get_random_response,
               trainer='chatterbot.trainers.ChatterBotCorpusTrainer',
               preprocessors=[
@@ -34,17 +35,17 @@ bot = ChatBot(name='Festum Evento', read_only=True,
 
 trainer = ListTrainer(bot)
 
-# trainer.train([
-#     'Good morning, how are you?',
-#     'I am doing well, how about you?',
-#     "I'm also good.",
-#     "That's good to hear.",
-#     "Yes it is.",
-#     "Hello",
-#     "Hi",
-#     "How are you doing?",
-#     "I am doing well.",
-#     "That is good to hear",
-#     "Yes it is.",
-#     "Can I help you with anything?",
-# ])
+trainer.train([
+    'Good morning, how are you?',
+    'I am doing well, how about you?',
+    "I'm also good.",
+    "That's good to hear.",
+    "Yes it is.",
+    "Hello",
+    "Hi",
+    "How are you doing?",
+    "I am doing well.",
+    "That is good to hear",
+    "Yes it is.",
+    "Can I help you with anything?",
+])

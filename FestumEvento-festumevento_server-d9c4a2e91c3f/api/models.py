@@ -1,5 +1,4 @@
 from django.db import models
-from sqlalchemy import null
 from users.models import User
 from enum import Enum
 from django.core.validators import MaxValueValidator
@@ -199,8 +198,7 @@ class EventRegistration(models.Model):
     capacity = models.IntegerField()
 
     poster = models.FileField(upload_to='media/image/poster', null=True, blank=True)
-    status = models.CharField(max_length=100, choices=[(
-        tag.value, tag) for tag in StatusChoice.all()])
+    status = models.CharField(max_length=100, choices=[(tag.value, tag) for tag in StatusChoice.all()])
     is_verify = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     description = models.CharField(max_length=1000)

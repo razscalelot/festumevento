@@ -274,9 +274,18 @@ class EventVideoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SeatingArrangementMasterForSeatSerializer(serializers.ModelSerializer):
+    #timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
+
+    class Meta:
+        model = SeatingArrangementMaster
+        fields = ('id', 'name', 'svg', 'timestamp',
+                  'sequence', 'is_active')
+
+
 class SeatingArrangementBookingSerializer(serializers.ModelSerializer):
     # timestamp = serializers.DateField(allow_null=True, read_only=True,format='%d %b %Y')
-    # seat = SeatingArrangementMasterSerializer(read_only=True)
+    seat = SeatingArrangementMasterForSeatSerializer(read_only=True)
 
     class Meta:
         model = SeatingArrangementBooking

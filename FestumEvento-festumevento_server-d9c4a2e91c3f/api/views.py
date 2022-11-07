@@ -1,5 +1,5 @@
 
-from multiprocessing import context
+# from multiprocessing import context
 
 from requests import request
 import api.FCMmanager as fcm
@@ -7,13 +7,8 @@ from django.core.mail import send_mail
 # from twilio.rest import Client
 from .environ import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
 from django.db import connection
-import email
-import csv
-import threading
 from api.chatterbot import bot
 import copy
-import imp
-import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -25,10 +20,8 @@ from .models import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from django.db.models import F, Q
-from django.db.models import Prefetch
 from datetime import datetime, date
-from django.db.models.functions import Radians, Power, Sin, Cos, ATan2, Sqrt, Radians, Now
-from django.core import serializers
+from django.db.models.functions import Radians
 from django.db.models import Sum
 import api.sms
 from decimal import Decimal
@@ -43,8 +36,6 @@ import api.razorpayx
 from itertools import chain
 from rest_framework.parsers import JSONParser
 from festumevento.settings import CHATTERBOT
-import io
-import csv
 import pandas as pd
 from rest_framework import generics
 from currency_converter import CurrencyConverter
@@ -282,8 +273,8 @@ class SetEvent(APIView):
                  }, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     def get(self, request, id=0):
-        # limit = int(request.GET.get('limit', 5))
-        # page = int(request.GET.get('page', 1))
+        limit = int(request.GET.get('limit', 5))
+        page = int(request.GET.get('page', 1))
 
         if id != 0:
             sub = EventRegistration.objects.filter(
@@ -294,12 +285,12 @@ class SetEvent(APIView):
                 event__user=request.user.id
             ).order_by('-id') #.order_by('start_date')
 
-        # total = sub.count()
-        # start = (page - 1) * limit
-        # end = page * limit
+        total = sub.count()
+        start = (page - 1) * limit
+        end = page * limit
 
-        # serializer = EventRegistrationSerializer2(sub[start:end], many=True)
-        serializer = EventRegistrationSerializer2(sub, many=True)
+        serializer = EventRegistrationSerializer2(sub[start:end], many=True)
+        # serializer = EventRegistrationSerializer2(sub, many=True)
         data = serializer.data
 
         # for d in data:
@@ -359,11 +350,11 @@ class SetEvent(APIView):
 
         return Response(
             {
-                # "total": total,
-                # "page": page,
-                # "last_page": math.ceil(total / limit),
-                # "next": 'next',
-                # "previous": 'previous',
+                "total": total,
+                "page": page,
+                "last_page": math.ceil(total / limit),
+                "next": 'next',
+                "previous": 'previous',
                 "events": data,
                 "local": shopSerializerData
 
