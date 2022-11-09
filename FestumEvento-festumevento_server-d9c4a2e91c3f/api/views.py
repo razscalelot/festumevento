@@ -371,7 +371,6 @@ class EventRegister(APIView):
         vstatus = False
         verror = None
         serializer = EventRegistrationSerializer(data=request.data)
-        print('serializer', serializer)
 
         try:
             vstatus = serializer.is_valid(raise_exception=True)
@@ -380,8 +379,7 @@ class EventRegister(APIView):
             verror = error
 
         if vstatus:
-            model_obj = serializer.save() 
-            print('serializer.data', serializer.data)           
+            model_obj = serializer.save()          
             return Response({"status": True, "detail": serializer.data}, status=status.HTTP_201_CREATED)
         else:
             return Response(
@@ -1239,88 +1237,142 @@ class UserEventsView(APIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        
         try:
-            search = request.GET.get('search', "")
-            print('get search', search)
+            upcoming = request.GET.get('upcoming', "false")
+            search = request.GET.get('search', "$")
             current_lat = float(request.GET.get('lat', 0))
-            print('get current_lat', current_lat)
+            print('current_lat', current_lat)
             current_long = float(request.GET.get('long', 0))
-            print('get current_long', current_long)
-            city = request.GET.get('city', "")
-            print('get city', city)
-            pincode = request.GET.get('pincode', "")
-            print('get pincode', pincode)
+            print('current_long', current_long)
+            city =  request.GET.get('city', 0)
+            pincode = request.GET.get('pincode', 0)
             min_lat = current_lat - (lat_1km * distance)
             max_lat = current_lat + (lat_1km * distance)
-
+            print('min_lat', min_lat)
+            print('max_lat', max_lat)
+            
             min_lng = current_long - (lng_1km * distance)
             max_lng = current_long + (lng_1km * distance)
+            print('min_lng', min_lng)
+            print('max_lng', max_lng)
 
-            start = request.GET.get('start')
-            print('start', start)
-            end = request.GET.get('end')
+            start = int(request.GET.get('start', 0))
+            end = start+ 15
 
-            today = datetime.today()
+            today = datetime.today().strftime('%Y-%m-%d')
+            print('today', today)
 
-            if search:
-                events = EventRegistration.objects.filter(
-                    Q(latitude__gte=min_lat, latitude__lte=max_lat, longitude__gte=min_lng, longitude__lte=max_lng) |
-                    Q(city__icontains=search) | Q(
-                        pincode__icontains=search) | Q(address__icontains=search)
-                    | Q(event__name__icontains=search) | Q(description__icontains=search),
-                    # Q(start_date__gte=today) | Q(end_date__gte=today),
-                    is_verify=True, is_active=True)
-                print('search event', events)
+            if search == '$':
+                # events = EventRegistration.objects.filter(
+                #         Q(latitude__gte=min_lat,latitude__lte=max_lat,longitude__gte=min_lng,longitude__lte=max_lng)
+                #         |
+                #         Q(city__icontains = city)
+                #         |
+                #         Q(pincode__icontains = pincode),
+                #         Q(start_date__gte = today) | Q(end_date__gte = today),
+                #         is_verify= True,is_active= True,status__icontains = 'SUBMIT'
+                #         ).order_by('-end_date', '-start_date')[start:end]
 
-            elif city:
-                print('city', city)
-                events = EventRegistration.objects.filter(
-                    Q(city__icontains=city), is_verify=True, is_active=True)
-                print('city event', events)
+                if upcoming == 'true':
+                    print('upcoming')
+                    print('min_lng', min_lng)
+                    print('max_lat', max_lat)
+                    events = EventRegistration.objects.filter(
+                            Q(latitude__gte=min_lat, latitude__lte=max_lat, longitude__gte=min_lng, longitude__lte=max_lng),
+                            # start_date__gte = today, 
+                            is_verify= True,is_active= True,status__icontains = 'SUBMIT'
+                            ).order_by('-end_date', '-start_date')[start:end]
+                    print('upcoming events', events)
+                else:
+                    events = EventRegistration.objects.filter(
+                            Q(latitude__gte=min_lat, latitude__lte=max_lat,longitude__gte=min_lng, longitude__lte=max_lng),
+                            end_date__gte = today, start_date__lte = today,
+                            is_verify= True,is_active= True,status__icontains = 'SUBMIT'
+                            ).order_by('-end_date', '-start_date')[start:end]
+                        
+            else:
+                # events = EventRegistration.objects.filter(
+                #         Q(latitude__gte=min_lat,latitude__lte=max_lat,longitude__gte=min_lng,longitude__lte=max_lng)
+                #         |
+                #         Q(city__icontains = search)
+                #         |
+                #         Q(pincode__icontains = search)                        
+                #         |
+                #         Q(address__icontains = search)   
+                #         |
+                #         Q(event__name__icontains = search)
+                #         |
+                #         Q(description__icontains = search)
+                #         ,
+                #         Q(start_date__gte = today) | Q(end_date__gte = today),
+                #         is_verify= True,is_active= True,status__icontains = 'SUBMIT'
+                #         ).order_by('-end_date', '-start_date')[start:end]
 
-            elif pincode:
-                print('pinecode', pincode)
-                events = EventRegistration.objects.filter(
-                    Q(pincode__icontains=pincode))
+                        events = EventRegistration.objects.filter(
+                                Q(city__icontains = search)
+                                |
+                                Q(pincode__icontains = search)                        
+                                |
+                                Q(address__icontains = search)   
+                                |
+                                Q(event__name__icontains = search)
+                                |
+                                Q(description__icontains = search)
+                                ,                        
+                                Q(latitude__gte=min_lat, latitude__lte=max_lat, longitude__gte=min_lng, longitude__lte=max_lng)
+                                |
+                                Q(start_date__gte = today) | Q(end_date__gte = today),
+                                is_verify= True, is_active= True, status__icontains = 'SUBMIT'
+                                ).order_by('-end_date', '-start_date')[start:end]
 
-            elif start or end:
-                print('call')
-                print('date', start)
-                events = EventRegistration.objects.filter(
-                    Q(start_date__gte=int(start)) | Q(end_date__gte=end))
-                print('date event', events)
-
-            elif min_lat != '' or max_lat != '' or min_lng != '' or min_lng != '':
-                print('lng', min_lat, max_lat, min_lng, min_lng)
-                events = EventRegistration.objects.filter(
-                    Q(latitude__gte=min_lat, latitude__lte=max_lat, longitude__gte=min_lng, longitude__lte=max_lng))
-
-            print('event', events)
-
+            # print(events.query)
             serializer = EventRegistrationSerializer2(events, many=True)
 
-            print('serializer.data', serializer.data)
-
             data = serializer.data
-            for i in data:
-                price = PriceMatrix.objects.filter(
-                    event_reg=i["id"]
-                ).order_by('number')
-                priceserializer = PriceMatrixSerializer(price, many=True)
-                i["price_matric"] = priceserializer.data
+            for i in data :
+                # price = PriceMatrix.objects.filter(
+                #     event_reg = i["id"]
+                # ).order_by('number')
+                # priceserializer = PriceMatrixSerializer(price, many=True)
+                # i["price_matric"] = priceserializer.data
+                
+                ratings = CommentsAndRating.objects.filter(
+                    occasion = i["id"],
+                    is_active  = True
+                ).order_by('-timestamp')[:1]
+                ratings = CommentsAndRatingSerializer(ratings, many=True).data
+                if len(ratings) > 0:
+                    i["rating"] = ratings[0]['avg_rating'];
+                    i["user_rating"] = ratings[0]['avg_user_rating'];
+                else:
+                    i["rating"] = 0.0;
+                    i["user_rating"] = 0.0;
+                
+                try:
+                    wishlist = WishlistOccation.objects.filter(
+                        occasion = i["id"],
+                        user = request._user
+                    )
+                    if wishlist.count() > 0:
+                        i["is_wishlist"] = wishlist[0].is_active
+                    else:
+                        i["is_wishlist"] = False
+                except:
+                    i["is_wishlist"] = False
 
             return Response(
-                {
+                { 
                     "status": True,
-                    "detail": serializer.data
+                    "detial": serializer.data
                 },
                 status=status.HTTP_201_CREATED
             )
         except Exception as error:
             return Response(
-                {
+                { 
                     "status": False,
-                    "detail": str(error)
+                    "detial": str(error)
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
