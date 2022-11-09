@@ -38,6 +38,13 @@ CORS_ORIGIN_WHITELIST = [
     "http://192.168.29.223:8080"
 ]
 
+INTERNAL_IPS = [
+   # ...
+   '127.0.0.1',
+   '192.168.29.23'
+   # ...
+]
+
 # Application definition
 
 FCM_SERVER_API_KEY = "AAAAa6V4Q_E:APA91bFt4XJd_U75F_cEw-cPOiOREVx7fs99m6JHJHeIMXJaqcPN-8F04V8-Q2aRcYNN27BpC-N3qb1JiH51q6TjRZqblZY-4YzgGlpH8H0mb4ubAN4QktVuD31Co4MWPuf1_JcgUISW"
@@ -64,6 +71,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'channels',
     "twilio",
+    "debug_toolbar",
 
 ]
 
@@ -76,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'festumevento.urls'
@@ -140,20 +149,20 @@ print(MEDIA_ROOT)
 #     }
 # }
 # --------------Local-------------------
-DATABASES = {
-    'default':
-        {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'festumevento_uat',
-            'USER': 'root',
-            'PASSWORD': "",
-            'HOST': "localhost",
-            'PORT': "3306",
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }
-        }
-}
+# DATABASES = {
+#     'default':
+#         {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'festumevento_uat',
+#             'USER': 'root',
+#             'PASSWORD': "",
+#             'HOST': "localhost",
+#             'PORT': "3306",
+#             'OPTIONS': {
+#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#             }
+#         }
+# }
 
 
 # --------------MongoDB-------------------
@@ -170,20 +179,20 @@ DATABASES = {
 
 
 # --------------- AWS Production----------------
-# DATABASES = {
-#     'default':
-#         {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'NAME': 'festumevento_uat',
-#             'USER': 'festumuser',
-#             'PASSWORD': "festumpassword",
-#             'HOST': "173.201.189.160",
-#             'PORT': "3306",
-#             'OPTIONS': {
-#                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-#             }
-#         }
-# }
+DATABASES = {
+    'default':
+        {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'festumevento_uat',
+            'USER': 'festumuser',
+            'PASSWORD': "festumpassword",
+            'HOST': "173.201.189.160",
+            'PORT': "3306",
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }
+        }
+}
 
 
 # DATABASES = {

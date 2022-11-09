@@ -234,7 +234,7 @@ class OrgEvents(APIView):
 
 
 class SetEvent(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         if not request.POST._mutable:
@@ -277,10 +277,10 @@ class SetEvent(APIView):
         page = int(request.GET.get('page', 1))
 
         if id != 0:
-            sub = EventRegistration.objects.filter(
+            sub = EventRegistration.objects.select_related('event', 'orgdiscountsId').filter(
                 is_active=True, event__user=request.user.id, id=id).order_by('-id') #.order_by('start_date')
         else:
-            sub = EventRegistration.objects.filter(
+            sub = EventRegistration.objects.select_related('event', 'orgdiscountsId').filter(
                 is_active=True,
                 event__user=request.user.id
             ).order_by('-id') #.order_by('start_date')
@@ -319,7 +319,7 @@ class SetEvent(APIView):
             else:
                 event["invoice_status"] = ""
 
-        shops = Shop.objects.filter(
+        shops = Shop.objects.select_related('user', 'category').filter(
             user=request.user,
             is_active=True
         )
