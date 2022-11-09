@@ -84,7 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'festumevento.urls'
@@ -179,36 +179,36 @@ print(MEDIA_ROOT)
 
 
 # --------------- AWS Production----------------
-DATABASES = {
-    'default':
-        {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'festumevento_uat',
-            'USER': 'festumuser',
-            'PASSWORD': "festumpassword",
-            'HOST': "173.201.189.160",
-            'PORT': "3306",
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-            }
-        }
-}
-
-
 # DATABASES = {
 #     'default':
 #         {
 #             'ENGINE': 'django.db.backends.mysql',
 #             'NAME': 'festumevento_uat',
-#             'USER': 'main',
-#             'PASSWORD': "Nomorob@32",
-#             'HOST': "139.59.90.124",
+#             'USER': 'festumuser',
+#             'PASSWORD': "festumpassword",
+#             'HOST': "173.201.189.160",
 #             'PORT': "3306",
 #             'OPTIONS': {
 #                 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
 #             }
 #         }
 # }
+
+
+DATABASES = {
+    'default':
+        {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'festumevento',
+            'USER': 'main',
+            'PASSWORD': "Nomorob@32",
+            'HOST': "139.59.90.124",
+            'PORT': "3306",
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }
+        }
+}
 
 # --------------Scalelot-----------------------
 # DATABASES = {

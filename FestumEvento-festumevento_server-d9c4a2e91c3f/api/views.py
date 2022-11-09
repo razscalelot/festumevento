@@ -277,10 +277,10 @@ class SetEvent(APIView):
         page = int(request.GET.get('page', 1))
 
         if id != 0:
-            sub = EventRegistration.objects.select_related('event', 'orgdiscountsId').filter(
+            sub = EventRegistration.objects.filter(
                 is_active=True, event__user=request.user.id, id=id).order_by('-id') #.order_by('start_date')
         else:
-            sub = EventRegistration.objects.select_related('event', 'orgdiscountsId').filter(
+            sub = EventRegistration.objects.filter(
                 is_active=True,
                 event__user=request.user.id
             ).order_by('-id') #.order_by('start_date')
@@ -319,7 +319,7 @@ class SetEvent(APIView):
             else:
                 event["invoice_status"] = ""
 
-        shops = Shop.objects.select_related('user', 'category').filter(
+        shops = Shop.objects.filter(
             user=request.user,
             is_active=True
         )
